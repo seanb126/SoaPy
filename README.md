@@ -1,4 +1,4 @@
-# SoaPy
+# SoaPy - 1.0.1 - Alpha
 
 ## Introduction
 SoaPy is a piece of free and open source software (FOSS) developed in Python for Python developers.
