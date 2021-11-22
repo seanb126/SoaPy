@@ -8,8 +8,19 @@ Created on Mon Nov 22 18:58:49 2021
 
 
 from tkinter import *
+from tkinter import filedialog as fd
 
 root = Tk()
+
+def openPy():
+    file = fd.askopenfilename(title='Open Python File')
+    file = open(file, 'r')
+    data = file.read()
+
+    textField.insert(END, data)
+    file.close()
+
+
 
  
 # reflects specified file name else = 'untitled'
@@ -23,14 +34,22 @@ editStatus = '*'
 root.title('SoaPy' + ' - {}{}'.format(projectName, editStatus))
 
 # Toolbar
-toolBar = Frame(root, bg='blue')
+toolBar = Frame(root, bg='#F8F6F0')
 toolBar.pack(side=TOP, fill=X)
-# buttons
-openFile = Button(toolBar, text='Open File')
+# ----buttons----
+
+# Open File
+openFile = Button(toolBar, text='Open', command=openPy)
 openFile.pack(side=LEFT, padx=2, pady= 10)
+# Save File
+saveFile = Button(toolBar, text='Save')
+saveFile.pack(side=LEFT, padx=2, pady= 10)
+# Run File
+runFile = Button(toolBar, text='Run')
+runFile.pack(side=RIGHT, padx=2, pady= 10)
 
 # text field
-textField = Text(root, padx=3, pady=50, wrap='word',undo=True)
+textField = Text(root, padx=3, pady=5, wrap='word',undo=True)
 textField.pack(expand='yes', fill='both')
 
 
