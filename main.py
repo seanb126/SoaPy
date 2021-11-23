@@ -12,11 +12,17 @@ from tkinter import filedialog as fd
 import os
 
 
+
 # modulerise these functions
 # move out of main file create window file
 # move core files to 'core folder'
 # create 'extended' file class for mods
+
+
+
+
 root = Tk()
+
 
 root.geometry('500x600')
 
