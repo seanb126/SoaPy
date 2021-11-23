@@ -11,6 +11,11 @@ from tkinter import *
 from tkinter import filedialog as fd
 import os
 
+
+# modulerise these functions
+# move out of main file create window file
+# move core files to 'core folder'
+# create 'extended' file class for mods
 root = Tk()
 
 root.geometry('500x600')
@@ -116,7 +121,7 @@ command=saveAsPy)
 saveFile.pack(side=LEFT, padx=5, pady= 10)
 
 # Run File
-runIcon = PhotoImage(file = r'icons/play-fill.png')
+runIcon = PhotoImage(file = r'icons/greenRun2.png')
 runFile = Button(toolBar, 
 height=20, width=20, image=runIcon,
 highlightthickness = 0, bd = 0, bg = '#F8F6F0')
