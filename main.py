@@ -13,6 +13,8 @@ import os
 
 root = Tk()
 
+root.geometry('500x600')
+
 def openPy():
     textField.delete('1.0', END) # check if in case cancelled
     file = fd.askopenfilename(title='Open Python File',
@@ -21,12 +23,9 @@ def openPy():
     file = open(file, 'r')
     data = file.read()
 
-    # fileName = file
     fileName = os.path.basename(str(file))
-    # fileName = str(fileName).rpartition('/')
     fileName = fileName.rpartition('.py')
     ft = '.py'
-    # fileName = fileName + ft
     fileName = fileName[0]
     root.title(f'SoaPy - {fileName}{ft}')
 
@@ -36,8 +35,25 @@ def openPy():
     textField.insert(END, data)
     file.close()
 
-def savePy():
-    t  = '3'
+def saveAsPy():
+    pyFile = fd.asksaveasfilename(
+        defaultextension='.*',
+        title='Save File',
+        filetypes=(('Python Files', '*.py'),('Text Files', '*.txt'), 
+    ('All Files', '*.*'))
+    )
+    if pyFile:
+        fileName = os.path.basename(str(pyFile))
+        fileName = fileName.rpartition('.py')
+        ft = '.py'
+        fileName = fileName[0]
+        root.title(f'SoaPy - {fileName}{ft}')
+    # save 
+        pyFile = open(pyFile, 'w')
+        pyFile.write(textField.get(1.0, END))
+        pyFile.close()    
+
+
 
 def newPy():
     # add if statement to determine if file is empty
@@ -93,12 +109,12 @@ newFile.pack(side=LEFT, padx=5, pady= 10)
 
 # Save File
 saveIcon = PhotoImage(file = r'icons/save-3-line.png')
-
 saveFile = Button(toolBar, 
 height=20, width=20, image=saveIcon,
-highlightthickness = 0, bd = 0, bg = '#F8F6F0')
-
+highlightthickness = 0, bd = 0, bg = '#F8F6F0',
+command=saveAsPy)
 saveFile.pack(side=LEFT, padx=5, pady= 10)
+
 # Run File
 runIcon = PhotoImage(file = r'icons/play-fill.png')
 runFile = Button(toolBar, 
