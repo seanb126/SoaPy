@@ -16,3 +16,4 @@ Feel free to provide suggestions or report technical issues
 - Provide access to Python environment / system terminal
 - Implement Source Control through Git
 - Allow for package extensions
+- Automatic file backups
