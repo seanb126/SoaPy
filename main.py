@@ -9,7 +9,9 @@ Created on Mon Nov 22 18:58:49 2021
 
 from tkinter import *
 from tkinter import filedialog as fd
+from tkinter.scrolledtext import ScrolledText
 import os
+import subprocess
 
 
 
@@ -18,6 +20,36 @@ import os
 # move core files to 'core folder'
 # create 'extended' file class for mods
 
+class CustomText(Text):
+
+    def __init__(self, *args, **kwargs):
+        Text.__init__(self, *args, **kwargs)
+
+    def highlight_pattern(self, pattern, tag, start="1.0", end="end",
+                          regexp=False):
+        '''Apply the given tag to all text that matches the given pattern
+
+        If 'regexp' is set to True, pattern will be treated as a regular
+        expression according to Tcl's regular expression syntax.
+        '''
+
+        start = self.index(start)
+        end = self.index(end)
+        self.mark_set("matchStart", start)
+        self.mark_set("matchEnd", start)
+        self.mark_set("searchLimit", end)
+
+        CustomText.tag_config("red", foreground = "red")
+        CustomText.highlight_pattern("hello", "red")
+        count = IntVar()
+        while True:
+            index = self.search(pattern, "matchEnd","searchLimit",
+                                count=count, regexp=regexp)
+            if index == "": break
+            if count.get() == 0: break # degenerate pattern which matches zero-length strings
+            self.mark_set("matchStart", index)
+            self.mark_set("matchEnd", "%s+%sc" % (index, count.get()))
+            self.tag_add(tag, "matchStart", "matchEnd")
 
 
 
@@ -27,24 +59,26 @@ root = Tk()
 root.geometry('500x600')
 
 def openPy():
-    textField.delete('1.0', END) # check if in case cancelled
-    file = fd.askopenfilename(title='Open Python File',
-    filetypes=(('Python Files', '*.py'),('Text Files', '*.txt'), 
-    ('All Files', '*.*')))
-    file = open(file, 'r')
-    data = file.read()
+    try:
+        global path
+        file = fd.askopenfilename(title='Open Python File',
+        filetypes=(('Python Files', '*.py'),('Text Files', '*.txt'), 
+        ('All Files', '*.*')))
+        file = open(file, 'r')
+        data = file.read()
 
-    fileName = os.path.basename(str(file))
-    fileName = fileName.rpartition('.py')
-    ft = '.py'
-    fileName = fileName[0]
-    root.title(f'SoaPy - {fileName}{ft}')
-
-
-
-
-    textField.insert(END, data)
-    file.close()
+        fileName = os.path.basename(str(file))
+        fileName = fileName.rpartition('.py')
+        ft = '.py'
+        fileName = fileName[0]
+        root.title(f'SoaPy - {fileName}{ft}')
+        path = f'{fileName}{ft}'
+        textField.delete('1.0', END) # check if in case cancelled
+        textField.insert(END, data)
+        file.close()
+    except:
+        print('! Error opening file !')
+        print('i: Likely operation was cancelled by user')
 
 def saveAsPy():
     pyFile = fd.asksaveasfilename(
@@ -70,6 +104,24 @@ def newPy():
     # add if statement to determine if file is empty
     textField.delete('1.0', END)
     root.title('SoaPy - untitled*')
+
+output_window = ScrolledText(root, height=10)
+output_window.pack(fill=BOTH, expand=1)
+
+def run(event=None):
+    cmd = f'python {path}'
+    process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE, shell=True)
+    output, error =  process.communicate()
+    # delete the previous text from
+    # output_windows
+    output_window.delete(1.0, END)
+    # insert the new output text in
+    # output_windows
+    output_window.insert(1.0, output)
+    # insert the error text in output_windows
+    # if there is error
+    output_window.insert(1.0, error)
 
 
  
@@ -130,12 +182,13 @@ saveFile.pack(side=LEFT, padx=5, pady= 10)
 runIcon = PhotoImage(file = r'icons/greenRun2.png')
 runFile = Button(toolBar, 
 height=20, width=20, image=runIcon,
-highlightthickness = 0, bd = 0, bg = '#F8F6F0')
+highlightthickness = 0, bd = 0, bg = '#F8F6F0',
+command=run)
 
 runFile.pack(side=RIGHT, padx=5, pady= 10)
 
 # text field
-textField = Text(root, padx=3, pady=5, wrap='word',undo=True)
+textField = CustomText(root, padx=3, pady=5, wrap='word',undo=True)
 textField.pack(expand='yes', fill='both')
 
 
@@ -145,6 +198,10 @@ term = Frame(root, height=200, width=200)
 term.pack(fill=BOTH, expand=YES)
 wid = term.winfo_id()
 os.system('xterm -into %d -hold -geometry 300x10 -sb &' % wid)
+
+# tagging python structures
+# textField.tag_config("red", foreground = "red")
+# textField.highlight_pattern("hello", "red")
 
 
 
