@@ -12,8 +12,10 @@ from tkinter import filedialog as fd
 from tkinter import font
 from tkinter.scrolledtext import ScrolledText
 import os
+import sys
 import subprocess
 from subprocess import Popen, PIPE
+import platform
 
 
 
@@ -21,6 +23,9 @@ from subprocess import Popen, PIPE
 # move out of main file create window file
 # move core files to 'core folder'
 # create 'extended' file class for mods
+
+usrSystem = platform.system()
+print(usrSystem)
 
 
 
@@ -309,7 +314,23 @@ def run():
 
     #xterm code
     # os.system(f"xterm -hold -e sudo python {path}" % wid)
-    subprocess.Popen(['xterm', '-e', f'bash -c \"python {path}; exec bash\"'])
+
+    if usrSystem == 'Linux':
+        try:
+            subprocess.Popen(['gnome-terminal', '-e', f'bash -c \"python {path}; exec bash\"'])
+        except:
+            print('System does not use Gnome DE')
+            try:
+                subprocess.Popen(['xterm', '-e', f'bash -c \"python {path}; exec bash\"'])
+            except:
+                print('Xterm is not installed on this device')
+    cmd = f'python {path}'
+    # tt.communicate(bytes(cmd.encode()))[0]
+
+
+    # tt.stdin.write(bytes(f'bash -c \"python {path}; exec bash\"'.encode))
+    # tt.communicate(f'bash -c \"python {path}; exec bash\"'.encode('utf8'))
+    # tt.stdin.flush()
 
 
 def runOperation(event=None):
@@ -340,7 +361,9 @@ term = Frame(root, height=200, width=200)
 
 term.pack(fill=BOTH, expand=YES)
 wid = term.winfo_id()
-os.system('xterm -into %d -hold -geometry 300x10 -sb &' % wid)
+# os.system('xterm -into %d -hold -geometry 300x10 -sb &' % wid)
+tt = subprocess.Popen(['xterm','-into',str(wid),'-geometry', '300x10'],
+stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 
 # tagging python structures
 # textField.tag_config("red", foreground = "red")
