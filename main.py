@@ -21,6 +21,10 @@ import subprocess
 # move core files to 'core folder'
 # create 'extended' file class for mods
 
+
+
+
+
 class CustomText(Text):
 
     def __init__(self, *args, **kwargs):
@@ -58,6 +62,27 @@ root = Tk()
 path = ''
 
 root.geometry('500x600')
+
+def getNumbers(event=None):
+    output = ''
+    row, col = textField.index('end').split('.')
+    for i in range(1, int(row)):
+        output += str(i) + '\n'
+
+    return output
+
+def updtNumbers(event=None):
+    lineNum_bar = getNumbers()
+    lineNum.config(state='normal')
+    lineNum.delete(1.0, END)
+    lineNum.insert(1.0, lineNum_bar)
+    lineNum.config(state='disabled')
+
+lineNum = Text(
+    root, width=4, padx=0, state='disabled',
+    takefocus=0, background='grey', wrap='none'
+)
+lineNum.pack(side='left', fill='y')
 
 def choice(opt): # choice operand
     if opt == 's':
@@ -166,6 +191,9 @@ toolBar.pack(side=TOP, fill=X)
 
 # text field
 textField = CustomText(root, padx=3, pady=5, wrap='word',undo=True)
+
+textField.bind('<Any-KeyPress>', updtNumbers)
+
 textField.pack(expand='yes', fill='both')
 
 # ----buttons----
@@ -243,7 +271,7 @@ runFile.pack(side=RIGHT, padx=5, pady= 10)
 
 
 
-# terminal
+# xterm terminal
 # term = Frame(root, height=200, width=200)
 
 # term.pack(fill=BOTH, expand=YES)
