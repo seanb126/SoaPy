@@ -1,1 +1,0 @@
-prin('new doc test')

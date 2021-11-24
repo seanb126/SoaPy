@@ -9,6 +9,7 @@ Created on Mon Nov 22 18:58:49 2021
 
 from tkinter import *
 from tkinter import filedialog as fd
+from tkinter import font
 from tkinter.scrolledtext import ScrolledText
 import os
 import subprocess
@@ -58,31 +59,33 @@ path = ''
 
 root.geometry('500x600')
 
-def choice(opt):
-    if opt == 'save':
+def choice(opt): # choice operand
+    if opt == 's':
         saveAsPy()
-    elif opt == 'cancel':
+    elif opt == 'c':
         print('Run operation cancelled')
     pop.destroy()
 
 
-def check_run():
+def check_run(): # message box for when attempting to run a non-saved file
     global pop
     pop = Toplevel(root)
-    pop.title('Warning')
-    pop.geometry('300x200')
-    pop_label = Label(pop, text='You must save this file in order to run it')
+    pop.title('Run Operation Warning')
+    pop.geometry('300x100')
+    pop.resizable(height=False, width=False)
+    pop_label = Label(pop, text='You must first save this file \n in order to run it')
+    pop_label.configure(font=('Helvetica',12))
     pop_label.pack(pady=10)
 
     pop_frame = Frame(pop)
     pop_frame.pack(pady=5)
 
-    saveButton = Button(pop_frame, text='YES', 
-    command=lambda: choice('save'))
+    saveButton = Button(pop_frame, text='Save', 
+    command=lambda: choice('s'))
     saveButton.grid(row=0, column=0)
 
     cancelButton = Button(pop_frame, text='Cancel', 
-    command=lambda: choice('cancel'))
+    command=lambda: choice('c'))
     cancelButton.grid(row=0, column=1)
 
 
