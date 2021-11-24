@@ -13,6 +13,7 @@ from tkinter import font
 from tkinter.scrolledtext import ScrolledText
 import os
 import subprocess
+from subprocess import Popen, PIPE
 
 
 
@@ -213,10 +214,12 @@ root.tk.call('wm', 'iconphoto', root._w, appIcon)
 toolBar = Frame(root, bg='#F8F6F0')
 toolBar.pack(side=TOP, fill=X)
 
-# text field
 
-output_window = ScrolledText(root, height=10)
-output_window.pack(side= 'bottom',fill='x', expand=1)
+# text field Terminal
+
+# output_window = ScrolledText(root, height=10)
+# output_window.pack(side= 'bottom',fill='x', expand=1)
+
 
 # lineNum.pack(side='left', fill='y') # uncomment for line numbering
 
@@ -290,19 +293,23 @@ saveFile.pack(side=LEFT, padx=5, pady= 10)
 # output_window.pack(fill=BOTH, expand=1)
 
 def run():
-    cmd = f'python {path}'
-    process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE, shell=True)
-    output, error =  process.communicate()
-    # delete the previous text from
-    # output_windows
-    output_window.delete(1.0, END)
-    # insert the new output text in
-    # output_windows
-    output_window.insert(1.0, output)
-    # insert the error text in output_windows
-    # if there is error
-    output_window.insert(1.0, error)
+    # cmd = f'python {path}'
+    # process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+    #                            stderr=subprocess.PIPE, shell=True)
+    # output, error =  process.communicate()
+    # # delete the previous text from
+    # # output_windows
+    # output_window.delete(1.0, END)
+    # # insert the new output text in
+    # # output_windows
+    # output_window.insert(1.0, output)
+    # # insert the error text in output_windows
+    # # if there is error
+    # output_window.insert(1.0, error)
+
+    #xterm code
+    # os.system(f"xterm -hold -e sudo python {path}" % wid)
+    subprocess.Popen(['xterm', '-e', f'bash -c \"python {path}; exec bash\"'])
 
 
 def runOperation(event=None):
@@ -329,15 +336,19 @@ runFile.pack(side=RIGHT, padx=5, pady= 10)
 
 
 # xterm terminal
-# term = Frame(root, height=200, width=200)
+term = Frame(root, height=200, width=200)
 
-# term.pack(fill=BOTH, expand=YES)
-# wid = term.winfo_id()
-# os.system('xterm -into %d -hold -geometry 300x10 -sb &' % wid)
+term.pack(fill=BOTH, expand=YES)
+wid = term.winfo_id()
+os.system('xterm -into %d -hold -geometry 300x10 -sb &' % wid)
 
 # tagging python structures
 # textField.tag_config("red", foreground = "red")
 # textField.highlight_pattern("hello", "red")
+
+
+
+
 
 
 
