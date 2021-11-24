@@ -123,14 +123,16 @@ def openPy():
         file = open(file, 'r')
         data = file.read()
 
-        filePath = os.path.dirname(str(file))
+        filePath = os.path.realpath(str(file.name))
+        print(filePath)
         fileName = os.path.basename(str(file.name))
         # print(f'Full FileName: {fileName}')
         # fileName = fileName.rpartition('.')
         # ft = '.py'
         # fileName = fileName[0]
         root.title(f'SoaPy - {fileName}')
-        path = f'{filePath}{fileName}'
+        path = f'{filePath}'
+        # print(path)
         textField.delete('1.0', END) # check if in case cancelled
         textField.insert(END, data)
         file.close()
@@ -162,14 +164,16 @@ def saveAsPy():
     ('All Files', '*.*'))
     )
     if pyFile:
+        filePath = os.path.dirname(str(pyFile))
         fileName = os.path.basename(str(pyFile))
-        ft = findExtention(fileName)
+        # fileName = os.path.basename(str(pyFile))
+        # ft = findExtention(fileName)
 
-        fileName = fileName.rpartition('.py')
-        # ft = '.py'
-        fileName = fileName[0]
-        path = f'{fileName}{ft}'
-        root.title(f'SoaPy - {fileName}{ft}')
+        # fileName = fileName.rpartition('.py')
+        # # ft = '.py'
+        # fileName = fileName[0]
+        path = f'{filePath}'
+        root.title(f'SoaPy - {fileName}')
     # save 
         pyFile = open(pyFile, 'w')
         pyFile.write(textField.get(1.0, END))
