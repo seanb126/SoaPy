@@ -194,15 +194,16 @@ toolBar.pack(side=TOP, fill=X)
 output_window = ScrolledText(root, height=10)
 output_window.pack(side= 'bottom',fill='x', expand=1)
 
-lineNum.pack(side='left', fill='y')
+# lineNum.pack(side='left', fill='y') # uncomment for line numbering
+
 textField = CustomText(root, padx=5, pady=5, wrap='word',undo=True)
-# lineNum.grid(row=0, column=0)
-# textField.grid(row=0,column=1)
-textField.bind('<Any-KeyPress>', updtNumbers)
+
+# textField.bind('<Any-KeyPress>', updtNumbers) # uncomment for line numbering
 
 textField.pack(expand='yes', fill='both')
 textField.configure(font=('Helvetica', 12))
-lineNum.configure(font=('Helvetica', 12))
+
+# lineNum.configure(font=('Helvetica', 12)) # uncomment for line numbering
 
 # bind text fields
 def OnScroll(event):
