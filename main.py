@@ -139,6 +139,13 @@ textField = Text(root, padx=3, pady=5, wrap='word',undo=True)
 textField.pack(expand='yes', fill='both')
 
 
+# terminal
+term = Frame(root, height=200, width=200)
+
+term.pack(fill=BOTH, expand=YES)
+wid = term.winfo_id()
+os.system('xterm -into %d -hold -geometry 300x10 -sb &' % wid)
+
 
 
 root.mainloop()
