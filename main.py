@@ -123,18 +123,36 @@ def openPy():
         file = open(file, 'r')
         data = file.read()
 
-        fileName = os.path.basename(str(file))
-        fileName = fileName.rpartition('.py')
-        ft = '.py'
-        fileName = fileName[0]
-        root.title(f'SoaPy - {fileName}{ft}')
-        path = f'{fileName}{ft}'
+        filePath = os.path.dirname(str(file))
+        fileName = os.path.basename(str(file.name))
+        # print(f'Full FileName: {fileName}')
+        # fileName = fileName.rpartition('.')
+        # ft = '.py'
+        # fileName = fileName[0]
+        root.title(f'SoaPy - {fileName}')
+        path = f'{filePath}{fileName}'
         textField.delete('1.0', END) # check if in case cancelled
         textField.insert(END, data)
         file.close()
     except:
         print('! Error opening file !')
         print('i: Likely operation was cancelled by user')
+
+# class findExtention(Variable):
+#     def find(Variable):
+#         if '.py' in Variable:
+#             print('File is a Python Script')
+#             value = '.py'
+#         elif '.txt' in Variable:
+#             print('File is a Text File')
+#             value = '.txt'
+#         else:
+#             print('Filetype is unregistered...')
+#             print('Attempting to open')
+#             value = '.???'
+#         return value
+
+
 
 def saveAsPy():
     pyFile = fd.asksaveasfilename(
@@ -145,8 +163,10 @@ def saveAsPy():
     )
     if pyFile:
         fileName = os.path.basename(str(pyFile))
+        ft = findExtention(fileName)
+
         fileName = fileName.rpartition('.py')
-        ft = '.py'
+        # ft = '.py'
         fileName = fileName[0]
         path = f'{fileName}{ft}'
         root.title(f'SoaPy - {fileName}{ft}')
