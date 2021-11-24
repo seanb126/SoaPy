@@ -54,9 +54,37 @@ class CustomText(Text):
 
 
 root = Tk()
-
+path = ''
 
 root.geometry('500x600')
+
+def choice(opt):
+    if opt == 'save':
+        saveAsPy()
+    elif opt == 'cancel':
+        print('Run operation cancelled')
+    pop.destroy()
+
+
+def check_run():
+    global pop
+    pop = Toplevel(root)
+    pop.title('Warning')
+    pop.geometry('300x200')
+    pop_label = Label(pop, text='You must save this file in order to run it')
+    pop_label.pack(pady=10)
+
+    pop_frame = Frame(pop)
+    pop_frame.pack(pady=5)
+
+    saveButton = Button(pop_frame, text='YES', 
+    command=lambda: choice('save'))
+    saveButton.grid(row=0, column=0)
+
+    cancelButton = Button(pop_frame, text='Cancel', 
+    command=lambda: choice('cancel'))
+    cancelButton.grid(row=0, column=1)
+
 
 def openPy():
     try:
@@ -92,6 +120,7 @@ def saveAsPy():
         fileName = fileName.rpartition('.py')
         ft = '.py'
         fileName = fileName[0]
+        path = f'{fileName}{ft}'
         root.title(f'SoaPy - {fileName}{ft}')
     # save 
         pyFile = open(pyFile, 'w')
@@ -104,24 +133,9 @@ def newPy():
     # add if statement to determine if file is empty
     textField.delete('1.0', END)
     root.title('SoaPy - untitled*')
+    path = ''
 
-output_window = ScrolledText(root, height=10)
-output_window.pack(fill=BOTH, expand=1)
 
-def run(event=None):
-    cmd = f'python {path}'
-    process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE, shell=True)
-    output, error =  process.communicate()
-    # delete the previous text from
-    # output_windows
-    output_window.delete(1.0, END)
-    # insert the new output text in
-    # output_windows
-    output_window.insert(1.0, output)
-    # insert the error text in output_windows
-    # if there is error
-    output_window.insert(1.0, error)
 
 
  
@@ -146,6 +160,11 @@ root.tk.call('wm', 'iconphoto', root._w, appIcon)
 # Toolbar
 toolBar = Frame(root, bg='#F8F6F0')
 toolBar.pack(side=TOP, fill=X)
+
+# text field
+textField = CustomText(root, padx=3, pady=5, wrap='word',undo=True)
+textField.pack(expand='yes', fill='both')
+
 # ----buttons----
 
 # current theme from remixicon.com
@@ -179,25 +198,54 @@ command=saveAsPy)
 saveFile.pack(side=LEFT, padx=5, pady= 10)
 
 # Run File
+output_window = ScrolledText(root, height=10)
+output_window.pack(fill=BOTH, expand=1)
+
+def run():
+    cmd = f'python {path}'
+    process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE, shell=True)
+    output, error =  process.communicate()
+    # delete the previous text from
+    # output_windows
+    output_window.delete(1.0, END)
+    # insert the new output text in
+    # output_windows
+    output_window.insert(1.0, output)
+    # insert the error text in output_windows
+    # if there is error
+    output_window.insert(1.0, error)
+
+
+def runOperation(event=None):
+    # path check
+    if '.' not in path:
+        check_run()
+        if '.' not in path:
+            pass
+        else:
+            run()
+    else:
+        run()
+
+    
 runIcon = PhotoImage(file = r'icons/greenRun2.png')
 runFile = Button(toolBar, 
 height=20, width=20, image=runIcon,
 highlightthickness = 0, bd = 0, bg = '#F8F6F0',
-command=run)
+command=runOperation)
 
 runFile.pack(side=RIGHT, padx=5, pady= 10)
 
-# text field
-textField = CustomText(root, padx=3, pady=5, wrap='word',undo=True)
-textField.pack(expand='yes', fill='both')
+
 
 
 # terminal
-term = Frame(root, height=200, width=200)
+# term = Frame(root, height=200, width=200)
 
-term.pack(fill=BOTH, expand=YES)
-wid = term.winfo_id()
-os.system('xterm -into %d -hold -geometry 300x10 -sb &' % wid)
+# term.pack(fill=BOTH, expand=YES)
+# wid = term.winfo_id()
+# os.system('xterm -into %d -hold -geometry 300x10 -sb &' % wid)
 
 # tagging python structures
 # textField.tag_config("red", foreground = "red")
