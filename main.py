@@ -82,7 +82,7 @@ lineNum = Text(
     root, width=4, padx=0, state='disabled',
     takefocus=0, background='grey', wrap='none'
 )
-lineNum.pack(side='left', fill='y')
+
 
 def choice(opt): # choice operand
     if opt == 's':
@@ -190,11 +190,19 @@ toolBar = Frame(root, bg='#F8F6F0')
 toolBar.pack(side=TOP, fill=X)
 
 # text field
-textField = CustomText(root, padx=3, pady=5, wrap='word',undo=True)
 
+output_window = ScrolledText(root, height=10)
+output_window.pack(side= 'bottom',fill='x', expand=1)
+
+lineNum.pack(side='left', fill='y')
+textField = CustomText(root, padx=5, pady=5, wrap='word',undo=True)
+# lineNum.grid(row=0, column=0)
+# textField.grid(row=0,column=1)
 textField.bind('<Any-KeyPress>', updtNumbers)
 
 textField.pack(expand='yes', fill='both')
+
+
 
 # ----buttons----
 
@@ -229,8 +237,8 @@ command=saveAsPy)
 saveFile.pack(side=LEFT, padx=5, pady= 10)
 
 # Run File
-output_window = ScrolledText(root, height=10)
-output_window.pack(fill=BOTH, expand=1)
+# output_window = ScrolledText(root, height=10)
+# output_window.pack(fill=BOTH, expand=1)
 
 def run():
     cmd = f'python {path}'
