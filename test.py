@@ -1,3 +1,1 @@
-def testDef():
-	print('Hello World')
-testDef()
+print('Hello World')
