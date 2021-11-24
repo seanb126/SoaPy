@@ -201,6 +201,30 @@ textField = CustomText(root, padx=5, pady=5, wrap='word',undo=True)
 textField.bind('<Any-KeyPress>', updtNumbers)
 
 textField.pack(expand='yes', fill='both')
+textField.configure(font=('Helvetica', 12))
+lineNum.configure(font=('Helvetica', 12))
+
+# bind text fields
+def OnScroll(event):
+    widget = event.widget
+    other = textField if widget == lineNum else lineNum
+    other.yview_moveto(widget.yview()[0])
+    other.mark_set('insert', widget.index('insert'))
+
+# textField("<KeyRelease-Up>", OnScroll)
+# textField("<KeyRelease-Down>", OnScroll)
+# lineNum("<KeyRelease-Up>", OnScroll)
+# lineNum("<KeyRelease-Down>", OnScroll)
+for widget in (textField, lineNum):
+        bindtags = list(widget.bindtags())
+        bindtags.insert(2, "custom")
+        widget.bindtags(tuple(bindtags))
+
+        widget.bind_class("custom", "<Up>", OnScroll)
+        widget.bind_all('<Button-5>', OnScroll)
+        widget.bind_all('<Button-4>', OnScroll)
+        widget.bind_class("custom", "<Down>", OnScroll)
+
 
 
 
