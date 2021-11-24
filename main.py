@@ -324,6 +324,16 @@ def run():
                 subprocess.Popen(['xterm', '-e', f'bash -c \"python {path}; exec bash\"'])
             except:
                 print('Xterm is not installed on this device')
+    elif usrSystem == 'Windows':
+        print('Windows Testing/Development has not started')
+    else:
+        print('Could not identify your OS...')
+        print('Attempting to open xterm')
+        try:
+            subprocess.Popen(['xterm', '-e', f'bash -c \"python {path}; exec bash\"'])
+        except:
+            print('Xterm is not installed on this device')
+
     cmd = f'python {path}'
     # tt.communicate(bytes(cmd.encode()))[0]
 
