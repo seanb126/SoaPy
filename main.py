@@ -16,6 +16,7 @@ import sys
 import subprocess
 from subprocess import Popen, PIPE
 import platform
+from typing import ContextManager
 
 
 
@@ -120,8 +121,33 @@ def check_run(): # message box for when attempting to run a non-saved file
     cancelButton = Button(pop_frame, text='Cancel', 
     command=lambda: choice('c'))
     cancelButton.grid(row=0, column=1)
-    termAssistance()
-    hlpLabel.update()
+    # termAssistance() # re-activate for terminal help
+    # hlpLabel.update() # re-activate for terminal help
+
+def AppInfo(): # message box for when attempting to run a non-saved file
+    # global pop2
+    appInfo = Toplevel(root)
+    appInfo.title('SoaPy IDE')
+    appInfo.geometry('400x200')
+    appInfo.resizable(height=False, width=False)
+
+    resAppImage = appIcon
+    resAppImage.zoom(25)
+    appImage = Label(appInfo, image = resAppImage)
+    appImage.pack(pady=5)
+
+    appName = Label(appInfo, text='SoaPy IDE 1.0.0')
+    appName.configure(font=('Helvetica',12))
+    appName.pack(pady= 5)
+
+
+    pyv = platform.python_build
+    spyTerminal = '1.0.0'
+    pop_info = Label(appInfo, text=f'Python: {pyv}\n SoaPy Terminal: {spyTerminal}\n Developed by Seanb126')
+    pop_info.pack(pady=5)
+        # termAssistance() # re-activate for terminal help
+        # hlpLabel.update() # re-activate for terminal help
+
 
 
 def openPy():
@@ -146,8 +172,8 @@ def openPy():
         textField.delete('1.0', END) # check if in case cancelled
         textField.insert(END, data)
         file.close()
-        termAssistance()
-        termHelp.update()
+        # termAssistance() # re-activate for terminal help
+        # termHelp.update() # re-activate for terminal help
     except:
         print('! Error opening file !')
         print('i: Likely operation was cancelled by user')
@@ -192,7 +218,7 @@ def saveAsPy():
         pyFile.write(textField.get(1.0, END))
         pyFile.close()   
         termAssistance()
-        termHelp.update()
+        # termHelp.update() # re-activate for terminal help
 
 
 
@@ -202,7 +228,7 @@ def newPy():
     root.title('SoaPy - untitled*')
     path = ''
     termAssistance()
-    termHelp.update()
+    # termHelp.update() # re-activate for terminal help
 
 
 
@@ -381,7 +407,7 @@ infIcon = PhotoImage(file = r'icons/information-fill.png')
 infFile = Button(toolBar, 
 height=20, width=20, image=infIcon,
 highlightthickness = 0, bd = 0, bg = '#F8F6F0',
-command=runOperation) # will open app info dialog box
+command=AppInfo) # will open app info dialog box
 
 infFile.pack(side=RIGHT, padx=5, pady= 10)
 
@@ -408,14 +434,14 @@ termType = Label(termBar, text=f'Terminal: ({termEnv})', background='#F8F6F0')
 termType.pack(pady=5, padx=5, fill='both', side=LEFT)
 
 # terminal assistance
-termHelp = Label(termBar, text='Remember to save before running script !',
-background='#F8F6F0')
-termHelp.config(font=("Courier", 10))
-termHelp.pack(pady=5, padx=5, fill='both', side=RIGHT)
+# termHelp = Label(termBar, text='Remember to save before running script !',
+# background='#F8F6F0')
+# termHelp.config(font=("Courier", 10))
+# termHelp.pack(pady=5, padx=5, fill='both', side=RIGHT)
 
-hlpIcon =PhotoImage(file = r'icons/question.png')
-hlpLabel = Label(termBar, image = hlpIcon, background='#F8F6F0')
-hlpLabel.pack(pady=5, padx=5, fill='both', side=RIGHT)
+# hlpIcon =PhotoImage(file = r'icons/question.png')
+# hlpLabel = Label(termBar, image = hlpIcon, background='#F8F6F0')
+# hlpLabel.pack(pady=5, padx=5, fill='both', side=RIGHT)
 
 # add. updates for when changing labels
 
@@ -431,8 +457,10 @@ def termAssistance():
 class SoaPyTerminal():
     output_window = ScrolledText(root, height=10)
     output_window.pack(fill=BOTH, expand=1)
+    
+    output_window.configure(background='black', foreground='white',
+     state='disabled', font=("Helvetica", 10))
     output_window.insert(1.0, 'SoaPy Terminal')
-    output_window.configure(background='black', foreground='white', state='disabled')
     
 try: 
     raise Exception # to test SoaPy Terminal
