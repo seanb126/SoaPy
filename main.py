@@ -66,8 +66,8 @@ class CustomText(Text):
 
 root = Tk()
 path = ''
-root.minsize(650, 600)
-root.maxsize(650, 700)
+# root.minsize(650, 600)
+# root.maxsize(650, 700)
 
 root.geometry('500x600')
 
@@ -247,6 +247,7 @@ textField = Text(root, padx=5, pady=5,undo=True)
 textField.pack(expand='false', pady=5)
 textField.pack_propagate(False)
 textField.configure(font=('Helvetica', 12))
+textField.config(wrap='none')
 
 # lineNum.configure(font=('Helvetica', 12)) # uncomment for line numbering
 
@@ -317,10 +318,10 @@ def run():
         output, error =  process.communicate()
         # delete the previous text from
         # output_windows
-        output_window.delete(1.0, END)
+        #######output_window.delete(1.0, END)
         # insert the new output text in
         # output_windows
-        output_window.insert(1.0, output)
+        output_window.insert(END, output + '\n') # needs fixing
         # insert the error text in output_windows
         # if there is error
         output_window.insert(1.0, error)
@@ -389,7 +390,7 @@ command=runOperation)
 
 runFile.pack(side=RIGHT, padx=5, pady= 10)
 
-termEnv = 'xterm' # change based on loadup function
+termEnv = '' # change based on loadup function
 
 # terminal image
 termBar =Frame(root, bg='#F8F6F0')
@@ -441,6 +442,8 @@ except:
     output_window.insert(1.0, 'SoaPy Terminal')
     output_window.configure(background='black', foreground='white')
     termEnv = 'SoaPy(T1.0)'
+    termType.configure(text=f'Terminal: ({termEnv})')
+    termType.update()
 
 # tagging python structures
 # textField.tag_config("red", foreground = "red")
