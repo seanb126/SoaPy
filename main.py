@@ -244,7 +244,7 @@ textField = Text(root, padx=5, pady=5,undo=True)
 
 # textField.bind('<Any-KeyPress>', updtNumbers) # uncomment for line numbering
 
-textField.pack(expand='false', pady=5)
+textField.pack(expand='true', pady=5, fill=BOTH)
 textField.pack_propagate(False)
 textField.configure(font=('Helvetica', 12))
 textField.config(wrap='none')
