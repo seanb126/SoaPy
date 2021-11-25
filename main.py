@@ -120,6 +120,8 @@ def check_run(): # message box for when attempting to run a non-saved file
     cancelButton = Button(pop_frame, text='Cancel', 
     command=lambda: choice('c'))
     cancelButton.grid(row=0, column=1)
+    termAssistance()
+    hlpLabel.update()
 
 
 def openPy():
@@ -144,9 +146,12 @@ def openPy():
         textField.delete('1.0', END) # check if in case cancelled
         textField.insert(END, data)
         file.close()
+        termAssistance()
+        termHelp.update()
     except:
         print('! Error opening file !')
         print('i: Likely operation was cancelled by user')
+        
 
 # class findExtention(Variable):
 #     def find(Variable):
@@ -185,7 +190,9 @@ def saveAsPy():
     # save 
         pyFile = open(pyFile, 'w')
         pyFile.write(textField.get(1.0, END))
-        pyFile.close()    
+        pyFile.close()   
+        termAssistance()
+        termHelp.update()
 
 
 
@@ -194,6 +201,8 @@ def newPy():
     textField.delete('1.0', END)
     root.title('SoaPy - untitled*')
     path = ''
+    termAssistance()
+    termHelp.update()
 
 
 
@@ -359,6 +368,19 @@ def runOperation(event=None):
         run()
 
     
+
+
+
+# App Information
+infIcon = PhotoImage(file = r'icons/information-fill.png')
+infFile = Button(toolBar, 
+height=20, width=20, image=infIcon,
+highlightthickness = 0, bd = 0, bg = '#F8F6F0',
+command=runOperation) # will open app info dialog box
+
+infFile.pack(side=RIGHT, padx=5, pady= 10)
+
+# run script
 runIcon = PhotoImage(file = r'icons/greenRun2.png')
 runFile = Button(toolBar, 
 height=20, width=20, image=runIcon,
@@ -367,13 +389,44 @@ command=runOperation)
 
 runFile.pack(side=RIGHT, padx=5, pady= 10)
 
+termEnv = 'xterm' # change based on loadup function
 
+# terminal image
+termBar =Frame(root, bg='#F8F6F0')
+termBar.pack(fill=X)
+termIcon = PhotoImage(file = r'icons/terminal.png')
+termLabel = Label(termBar, image = termIcon, background='#F8F6F0')
+termLabel.pack(pady=5, padx=5, fill='both', side=LEFT)
+
+# terminal label
+termType = Label(termBar, text=f'Terminal: ({termEnv})', background='#F8F6F0')
+termType.pack(pady=5, padx=5, fill='both', side=LEFT)
+
+# terminal assistance
+termHelp = Label(termBar, text='Remember to save before running script !',
+background='#F8F6F0')
+termHelp.config(font=("Courier", 10))
+termHelp.pack(pady=5, padx=5, fill='both', side=RIGHT)
+
+hlpIcon =PhotoImage(file = r'icons/question.png')
+hlpLabel = Label(termBar, image = hlpIcon, background='#F8F6F0')
+hlpLabel.pack(pady=5, padx=5, fill='both', side=RIGHT)
+
+# add. updates for when changing labels
+
+
+
+def termAssistance():
+    if '.' in path:
+        termHelp.configure(text=f'Type: python {path}')
+    else:
+        termHelp.configure(text='Remember to save before running script !')
 
 
 # xterm terminal
 term = Frame(root, height=200, width=200)
 
-term.pack(fill='x', padx=1, pady=1)
+term.pack(fill='both', padx=1, pady=1)
 # expand='yes', fill='both'
 wid = term.winfo_id()
 # os.system('xterm -into %d -hold -geometry 300x10 -sb &' % wid)
@@ -385,7 +438,6 @@ stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 # textField.highlight_pattern("hello", "red")
 
 # Pack Order
-
 
 
 
