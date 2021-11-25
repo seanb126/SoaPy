@@ -147,14 +147,15 @@ def AppInfo(): # message box for when attempting to run a non-saved file
     appImage.pack(pady=5)
 
     appName = Label(appInfo, text='SoaPy IDE 1.0.0')
-    appName.config(font=('liberation serif',12, 'bold'))
+    appName.config(font=('nimbus sans',15, 'bold'))
     appName.pack(pady= 5)
 
 
     pyv = platform.python_build
     spyTerminal = '1.0.0'
-    pop_info = Label(appInfo, text=f'Python: {pyv}\n SoaPy Terminal: {spyTerminal}\n Developed by Seanb126')
-    pop_info.pack(pady=5)
+    detInfo = Label(appInfo, text=f'SoaPy Terminal: {spyTerminal}\n Developed by Seanb126')
+    detInfo.config(font=('nimbus sans',12))
+    detInfo.pack(pady=5)
         # termAssistance() # re-activate for terminal help
         # hlpLabel.update() # re-activate for terminal help
 
@@ -245,7 +246,7 @@ def newPy():
 
  
 # reflects specified file name else = 'untitled'
-projectName = 'Untitled'
+projectName = 'untitled'
 # reflects edit status '*' if unsaved else ''
 editStatus = '*'
 # include change detection stream
