@@ -307,47 +307,47 @@ command=saveAsPy)
 saveFile.pack(side=LEFT, padx=5, pady= 10)
 
 # Run File
-# output_window = ScrolledText(root, height=10)
-# output_window.pack(fill=BOTH, expand=1)
+
 
 def run():
-    # cmd = f'python {path}'
-    # process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
-    #                            stderr=subprocess.PIPE, shell=True)
-    # output, error =  process.communicate()
-    # # delete the previous text from
-    # # output_windows
-    # output_window.delete(1.0, END)
-    # # insert the new output text in
-    # # output_windows
-    # output_window.insert(1.0, output)
-    # # insert the error text in output_windows
-    # # if there is error
-    # output_window.insert(1.0, error)
+    if termEnv == 'SoaPy(T1.0)':
+        cmd = f'python {path}'
+        process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE, shell=True)
+        output, error =  process.communicate()
+        # delete the previous text from
+        # output_windows
+        output_window.delete(1.0, END)
+        # insert the new output text in
+        # output_windows
+        output_window.insert(1.0, output)
+        # insert the error text in output_windows
+        # if there is error
+        output_window.insert(1.0, error)
+    else: 
 
     #xterm code
     # os.system(f"xterm -hold -e sudo python {path}" % wid)
-
-    if usrSystem == 'Linux':
-        try:
-            subprocess.Popen(['gnome-terminal', '-e', f'bash -c \"python {path}; exec bash\"'])
-        except:
-            print('System does not use Gnome DE')
+        if usrSystem == 'Linux':
+            try:
+                subprocess.Popen(['gnome-terminal', '-e', f'bash -c \"python {path}; exec bash\"'])
+            except:
+                print('System does not use Gnome DE')
+                try:
+                    subprocess.Popen(['xterm', '-e', f'bash -c \"python {path}; exec bash\"'])
+                except:
+                    print('Xterm is not installed on this device')
+        elif usrSystem == 'Windows':
+            print('Windows Testing/Development has not started')
+        else:
+            print('Could not identify your OS...')
+            print('Attempting to open xterm')
             try:
                 subprocess.Popen(['xterm', '-e', f'bash -c \"python {path}; exec bash\"'])
             except:
                 print('Xterm is not installed on this device')
-    elif usrSystem == 'Windows':
-        print('Windows Testing/Development has not started')
-    else:
-        print('Could not identify your OS...')
-        print('Attempting to open xterm')
-        try:
-            subprocess.Popen(['xterm', '-e', f'bash -c \"python {path}; exec bash\"'])
-        except:
-            print('Xterm is not installed on this device')
 
-    cmd = f'python {path}'
+        cmd = f'python {path}'
     # tt.communicate(bytes(cmd.encode()))[0]
 
 
@@ -422,16 +422,25 @@ def termAssistance():
     else:
         termHelp.configure(text='Remember to save before running script !')
 
+try: 
+    raise Exception # to test SoaPy Terminal
+    # xterm terminal
+    term = Frame(root, height=200, width=200)
 
-# xterm terminal
-term = Frame(root, height=200, width=200)
-
-term.pack(fill='both', padx=1, pady=1)
-# expand='yes', fill='both'
-wid = term.winfo_id()
-# os.system('xterm -into %d -hold -geometry 300x10 -sb &' % wid)
-tt = subprocess.Popen(['xterm','-into',str(wid),'-geometry', '300x10'],
-stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    term.pack(fill='both', padx=1, pady=1)
+    # expand='yes', fill='both'
+    wid = term.winfo_id()
+    # os.system('xterm -into %d -hold -geometry 300x10 -sb &' % wid)
+    tt = subprocess.Popen(['xterm','-into',str(wid),'-geometry', '300x10'],
+    stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    termEnv = 'xterm'
+    
+except:
+    output_window = ScrolledText(root, height=10)
+    output_window.pack(fill=BOTH, expand=1)
+    output_window.insert(1.0, 'SoaPy Terminal')
+    output_window.configure(background='black', foreground='white')
+    termEnv = 'SoaPy(T1.0)'
 
 # tagging python structures
 # textField.tag_config("red", foreground = "red")
