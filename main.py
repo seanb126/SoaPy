@@ -19,6 +19,8 @@ import platform
 from typing import ContextManager
 from PIL import Image, ImageTk
 import tkinter.font as tkf
+from soapyterminal import SoaPyTerminal
+# import soapyterminal
 
 
 
@@ -30,7 +32,7 @@ import tkinter.font as tkf
 # create 'extended' file class for mods
 
 usrSystem = platform.system()
-print(usrSystem)
+# print(usrSystem)
 
 
 
@@ -467,13 +469,13 @@ def termAssistance():
         termHelp.configure(text='Remember to save before running script !')
 
 
-class SoaPyTerminal():
-    output_window = ScrolledText(root, height=10)
-    output_window.pack(fill=BOTH, expand=1)
+# class SoaPyTerminal():
+#     output_window = ScrolledText(root, height=10)
+#     output_window.pack(fill=BOTH, expand=1)
     
-    output_window.configure(background='black', foreground='white', font=("Helvetica", 10))
-    output_window.insert(1.0, 'SoaPy Terminal - Version 1.0.0\n')
-    output_window.configure(state='disabled')
+#     output_window.configure(background='black', foreground='white', font=("Helvetica", 10))
+#     output_window.insert(1.0, 'SoaPy Terminal - Version 1.0.0\n')
+#     output_window.configure(state='disabled')
     
 try: 
     raise Exception # to test SoaPy Terminal
@@ -489,7 +491,7 @@ try:
     termEnv = 'xterm'
     
 except:
-    SoaPyTerminal()
+    SoaPyTerminal(root)
     # output_window = ScrolledText(root, height=10)
     # output_window.pack(fill=BOTH, expand=1)
     # output_window.insert(1.0, 'SoaPy Terminal')
