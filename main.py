@@ -338,7 +338,8 @@ command=newPy)
 newFile.pack(side=LEFT, padx=5, pady= 10)
 
 # Save File
-saveIcon = PhotoImage(file = r'icons/save-3-line.png')
+saveIcon = PhotoImage(file = r'icons/save-fill.png')
+# original 'icons/save-3-line.png'
 saveFile = Button(toolBar, 
 height=20, width=20, image=saveIcon,
 highlightthickness = 0, bd = 0, bg = '#F8F6F0',
