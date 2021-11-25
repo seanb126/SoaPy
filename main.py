@@ -17,10 +17,8 @@ import subprocess
 from subprocess import Popen, PIPE
 import platform
 from typing import ContextManager
-from PIL import Image, ImageTk
 import tkinter.font as tkf
 from soapyterminal import SoaPyTerminal
-# import soapyterminal
 
 
 
@@ -31,48 +29,15 @@ from soapyterminal import SoaPyTerminal
 # move core files to 'core folder'
 # create 'extended' file class for mods
 
-usrSystem = platform.system()
-# print(usrSystem)
+USER_SYSTEM = platform.system()
 
 
 
 
-
-class CustomText(Text):
-
-    def __init__(self, *args, **kwargs):
-        Text.__init__(self, *args, **kwargs)
-
-    def highlight_pattern(self, pattern, tag, start="1.0", end="end",
-                          regexp=False):
-        '''Apply the given tag to all text that matches the given pattern
-
-        If 'regexp' is set to True, pattern will be treated as a regular
-        expression according to Tcl's regular expression syntax.
-        '''
-
-        start = self.index(start)
-        end = self.index(end)
-        self.mark_set("matchStart", start)
-        self.mark_set("matchEnd", start)
-        self.mark_set("searchLimit", end)
-
-        CustomText.tag_config("red", foreground = "red")
-        CustomText.highlight_pattern("hello", "red")
-        count = IntVar()
-        while True:
-            index = self.search(pattern, "matchEnd","searchLimit",
-                                count=count, regexp=regexp)
-            if index == "": break
-            if count.get() == 0: break # degenerate pattern which matches zero-length strings
-            self.mark_set("matchStart", index)
-            self.mark_set("matchEnd", "%s+%sc" % (index, count.get()))
-            self.tag_add(tag, "matchStart", "matchEnd")
-
-
-
+# add to bootstrap
 root = Tk()
 path = ''
+load_images()
 
 # print(tkf.families())
 # root.minsize(650, 600)
@@ -80,7 +45,7 @@ path = ''
 
 root.geometry('500x600')
 
-def getNumbers(event=None):
+def get_numbers(event=None):
     output = ''
     row, col = textField.index('end').split('.')
     for i in range(1, int(row)):
@@ -88,8 +53,8 @@ def getNumbers(event=None):
 
     return output
 
-def updtNumbers(event=None):
-    lineNum_bar = getNumbers()
+def update_numbers(event=None):
+    lineNum_bar = get_numbers()
     lineNum.config(state='normal')
     lineNum.delete(1.0, END)
     lineNum.insert(1.0, lineNum_bar)
@@ -134,7 +99,7 @@ def check_run(): # message box for when attempting to run a non-saved file
 
 def AppInfo(): # message box for when attempting to run a non-saved file
     # global pop2
-    global img122
+    global INFO_APP_ICON
     appInfo = Toplevel(root)
     appInfo.title('SoaPy IDE')
     appInfo.geometry('400x200')
@@ -143,8 +108,8 @@ def AppInfo(): # message box for when attempting to run a non-saved file
     # resAppImage = Image.open('icons/appIcon30.png')
     # resAppImage.resize((20, 20))
     # img = ImageTk.PhotoImage(resAppImage)
-    img122 = PhotoImage(file ='icons/appIcon32.png')
-    appImage = Label(appInfo, image = img122)
+    
+    appImage = Label(appInfo, image = INFO_APP_ICON)
     appImage.image = 'icons/appIcon32.png'
     appImage.pack(pady=5)
 
@@ -243,9 +208,17 @@ def newPy():
     termAssistance()
     # termHelp.update() # re-activate for terminal help
 
-
-
-
+def load_images():
+    global APP_ICON, FILE_NEW_IMAGE, OPEN_FILE_ICON,SAVE_FILE_IMAGE
+    global APP_INFO_IMAGE, RUN_FILE_ICON, TERMINAL_IMAGE,INFO_APP_ICON
+    APP_ICON = PhotoImage(file = r'icons/appIcon32.png')
+    FILE_NEW_IMAGE = PhotoImage(file = r'icons/file-add-fill.png')
+    OPEN_FILE_ICON = PhotoImage(file = r'icons/folder-open-fill.png')
+    SAVE_FILE_IMAGE = PhotoImage(file = r'icons/save-fill.png')
+    APP_INFO_IMAGE = PhotoImage(file = r'icons/information-fill.png')
+    RUN_FILE_ICON = PhotoImage(file = r'icons/greenRun2.png')
+    TERMINAL_IMAGE = PhotoImage(file = r'icons/terminal.png')
+    INFO_APP_ICON = PhotoImage(file ='icons/appIcon32.png')
  
 # reflects specified file name else = 'untitled'
 projectName = 'untitled'
@@ -258,10 +231,9 @@ editStatus = '*'
 root.title('SoaPy' + ' - {}{}'.format(projectName, editStatus))
 
 # app icon
-appIcon = PhotoImage(file = 'icons/appIcon32.png') # find better method
 # appIcon = PhotoImage(r'icons/appIcon32.ico')
 
-root.tk.call('wm', 'iconphoto', root._w, appIcon)
+root.tk.call('wm', 'iconphoto', root._w, APP_ICON)
 # root.iconbitmap(r'icons/appIcon32.ico')
 #root.iconbitmap('icons/appIcon32.ico')
 
@@ -281,7 +253,7 @@ toolBar.pack(side=TOP, fill=X)
 textField = Text(root, padx=5, pady=5,undo=True)
 # wrap='word'
 
-# textField.bind('<Any-KeyPress>', updtNumbers) # uncomment for line numbering
+# textField.bind('<Any-KeyPress>', update_numbers) # uncomment for line numbering
 
 textField.pack(expand='true', pady=5, fill=BOTH)
 textField.pack_propagate(False)
@@ -320,30 +292,30 @@ textField.config(wrap='none')
 # current theme from remixicon.com
 
 # Open File
-openIcon = PhotoImage(file = r'icons/folder-open-fill.png')
+
 
 openFile = Button(toolBar, 
-height=20, width=20, image=openIcon,
+height=20, width=20, image=OPEN_FILE_ICON,
 highlightthickness = 0, bd = 0, bg = '#F8F6F0',
 command=openPy)
 
 openFile.pack(side=LEFT, padx=5, pady= 10)
 
 # New File
-newIcon = PhotoImage(file = r'icons/file-add-fill.png')
+
 
 newFile = Button(toolBar, 
-height=20, width=20, image=newIcon,
+height=20, width=20, image=FILE_NEW_IMAGE,
 highlightthickness = 0, bd = 0, bg = '#F8F6F0',
 command=newPy)
 
 newFile.pack(side=LEFT, padx=5, pady= 10)
 
 # Save File
-saveIcon = PhotoImage(file = r'icons/save-fill.png')
+
 # original 'icons/save-3-line.png'
 saveFile = Button(toolBar, 
-height=20, width=20, image=saveIcon,
+height=20, width=20, image=SAVE_FILE_IMAGE,
 highlightthickness = 0, bd = 0, bg = '#F8F6F0',
 command=saveAsPy)
 saveFile.pack(side=LEFT, padx=5, pady= 10)
@@ -363,7 +335,7 @@ def run():
         # SoaPyTerminal.output_window.insert(END, output) # needs fixing
        
         # SoaPyTerminal.output_window.insert(1.0, error)
-        # SoaPyTerminal.output_window.update()
+        # SoaPyTerminal.output+_window.update()
         # SoaPyTerminal.output_window.config(state='disabled')
 
         SoaPyTerminal.InsertData(output, error)
@@ -371,7 +343,7 @@ def run():
 
     #xterm code
     # os.system(f"xterm -hold -e sudo python {path}" % wid)
-        if usrSystem == 'Linux':
+        if USER_SYSTEM == 'Linux':
             try:
                 subprocess.Popen(['gnome-terminal', '-e', f'bash -c \"python {path}; exec bash\"'])
             except:
@@ -380,7 +352,7 @@ def run():
                     subprocess.Popen(['xterm', '-e', f'bash -c \"python {path}; exec bash\"'])
                 except:
                     print('Xterm is not installed on this device')
-        elif usrSystem == 'Windows':
+        elif USER_SYSTEM == 'Windows':
             print('Windows Testing/Development has not started')
         else:
             print('Could not identify your OS...')
@@ -415,18 +387,18 @@ def runOperation(event=None):
 
 
 # App Information
-infIcon = PhotoImage(file = r'icons/information-fill.png')
+
 infFile = Button(toolBar, 
-height=20, width=20, image=infIcon,
+height=20, width=20, image=APP_INFO_IMAGE,
 highlightthickness = 0, bd = 0, bg = '#F8F6F0',
 command=AppInfo) # will open app info dialog box
 
 infFile.pack(side=RIGHT, padx=5, pady= 10)
 
 # run script
-runIcon = PhotoImage(file = r'icons/greenRun2.png')
+
 runFile = Button(toolBar, 
-height=20, width=20, image=runIcon,
+height=20, width=20, image=RUN_FILE_ICON,
 highlightthickness = 0, bd = 0, bg = '#F8F6F0',
 command=runOperation)
 
@@ -437,8 +409,8 @@ termEnv = '' # change based on loadup function
 # terminal image
 termBar =Frame(root, bg='#F8F6F0')
 termBar.pack(fill=X)
-termIcon = PhotoImage(file = r'icons/terminal.png')
-termLabel = Label(termBar, image = termIcon, background='#F8F6F0')
+
+termLabel = Label(termBar, image = TERMINAL_IMAGE, background='#F8F6F0')
 termLabel.pack(pady=5, padx=5, fill='both', side=LEFT)
 
 # terminal label
@@ -509,7 +481,8 @@ except:
 
 
 
+if __name__ == '__main__':
+    
 
-
-root.mainloop()
+    root.mainloop()
 
