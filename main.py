@@ -147,7 +147,7 @@ def AppInfo(): # message box for when attempting to run a non-saved file
     appImage.pack(pady=5)
 
     appName = Label(appInfo, text='SoaPy IDE 1.0.0')
-    appName.config(font=('liberation sans',12, 'bold'))
+    appName.config(font=('liberation serif',12, 'bold'))
     appName.pack(pady= 5)
 
 
