@@ -17,6 +17,10 @@ import subprocess
 from subprocess import Popen, PIPE
 import platform
 from typing import ContextManager
+from PIL import Image, ImageTk
+import tkinter.font as tkf
+
+
 
 
 
@@ -67,6 +71,8 @@ class CustomText(Text):
 
 root = Tk()
 path = ''
+
+print(tkf.families())
 # root.minsize(650, 600)
 # root.maxsize(650, 700)
 
@@ -126,18 +132,22 @@ def check_run(): # message box for when attempting to run a non-saved file
 
 def AppInfo(): # message box for when attempting to run a non-saved file
     # global pop2
+    global img122
     appInfo = Toplevel(root)
     appInfo.title('SoaPy IDE')
     appInfo.geometry('400x200')
     appInfo.resizable(height=False, width=False)
 
-    resAppImage = appIcon
-    resAppImage.zoom(25)
-    appImage = Label(appInfo, image = resAppImage)
+    # resAppImage = Image.open('icons/appIcon30.png')
+    # resAppImage.resize((20, 20))
+    # img = ImageTk.PhotoImage(resAppImage)
+    img122 = PhotoImage(file ='icons/appIcon32.png')
+    appImage = Label(appInfo, image = img122)
+    appImage.image = 'icons/appIcon32.png'
     appImage.pack(pady=5)
 
     appName = Label(appInfo, text='SoaPy IDE 1.0.0')
-    appName.configure(font=('Helvetica',12))
+    appName.config(font=('liberation sans',12, 'bold'))
     appName.pack(pady= 5)
 
 
@@ -278,25 +288,26 @@ textField.config(wrap='none')
 # lineNum.configure(font=('Helvetica', 12)) # uncomment for line numbering
 
 # bind text fields
-def OnScroll(event):
-    widget = event.widget
-    other = textField if widget == lineNum else lineNum
-    other.yview_moveto(widget.yview()[0])
-    other.mark_set('insert', widget.index('insert'))
+# def OnScroll(event):
+#     widget = event.widget
+#     other = textField if widget == lineNum else lineNum
+#     other.yview_moveto(widget.yview()[0])
+#     other.mark_set('insert', widget.index('insert'))
 
 # textField("<KeyRelease-Up>", OnScroll)
 # textField("<KeyRelease-Down>", OnScroll)
 # lineNum("<KeyRelease-Up>", OnScroll)
 # lineNum("<KeyRelease-Down>", OnScroll)
-for widget in (textField, lineNum):
-        bindtags = list(widget.bindtags())
-        bindtags.insert(2, "custom")
-        widget.bindtags(tuple(bindtags))
 
-        widget.bind_class("custom", "<Up>", OnScroll)
-        widget.bind_all('<Button-5>', OnScroll)
-        widget.bind_all('<Button-4>', OnScroll)
-        widget.bind_class("custom", "<Down>", OnScroll)
+# for widget in (textField, lineNum):
+#         bindtags = list(widget.bindtags())
+#         bindtags.insert(2, "custom")
+#         widget.bindtags(tuple(bindtags))
+
+#         widget.bind_class("custom", "<Up>", OnScroll)
+#         widget.bind_all('<Button-5>', OnScroll)
+#         widget.bind_all('<Button-4>', OnScroll)
+#         widget.bind_class("custom", "<Down>", OnScroll)
 
 
 
