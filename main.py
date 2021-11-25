@@ -66,6 +66,8 @@ class CustomText(Text):
 
 root = Tk()
 path = ''
+root.minsize(650, 600)
+root.maxsize(650, 700)
 
 root.geometry('500x600')
 
@@ -228,11 +230,13 @@ toolBar.pack(side=TOP, fill=X)
 
 # lineNum.pack(side='left', fill='y') # uncomment for line numbering
 
-textField = CustomText(root, padx=5, pady=5, wrap='word',undo=True)
+textField = Text(root, padx=5, pady=5,undo=True)
+# wrap='word'
 
 # textField.bind('<Any-KeyPress>', updtNumbers) # uncomment for line numbering
 
-textField.pack(expand='yes', fill='both')
+textField.pack(expand='false', pady=5)
+textField.pack_propagate(False)
 textField.configure(font=('Helvetica', 12))
 
 # lineNum.configure(font=('Helvetica', 12)) # uncomment for line numbering
@@ -369,7 +373,8 @@ runFile.pack(side=RIGHT, padx=5, pady= 10)
 # xterm terminal
 term = Frame(root, height=200, width=200)
 
-term.pack(fill=BOTH, expand=YES)
+term.pack(fill='x', padx=1, pady=1)
+# expand='yes', fill='both'
 wid = term.winfo_id()
 # os.system('xterm -into %d -hold -geometry 300x10 -sb &' % wid)
 tt = subprocess.Popen(['xterm','-into',str(wid),'-geometry', '300x10'],
@@ -378,6 +383,8 @@ stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 # tagging python structures
 # textField.tag_config("red", foreground = "red")
 # textField.highlight_pattern("hello", "red")
+
+# Pack Order
 
 
 
