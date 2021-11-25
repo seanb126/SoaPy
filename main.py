@@ -311,7 +311,7 @@ saveFile.pack(side=LEFT, padx=5, pady= 10)
 
 
 def run():
-    if termEnv == 'SoaPy(T1.0)':
+    if termEnv == 'SoaPy':
         cmd = f'python {path}'
         process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE, shell=True)
@@ -321,10 +321,10 @@ def run():
         #######output_window.delete(1.0, END)
         # insert the new output text in
         # output_windows
-        output_window.insert(END, output + '\n') # needs fixing
+        SoaPyTerminal.output_windowoutput_window.insert(END, output + '\n') # needs fixing
         # insert the error text in output_windows
         # if there is error
-        output_window.insert(1.0, error)
+        SoaPyTerminal.output_window.insert(1.0, error)
     else: 
 
     #xterm code
@@ -422,7 +422,12 @@ def termAssistance():
         termHelp.configure(text=f'Type: python {path}')
     else:
         termHelp.configure(text='Remember to save before running script !')
-
+class SoaPyTerminal():
+    output_window = ScrolledText(root, height=10)
+    output_window.pack(fill=BOTH, expand=1)
+    output_window.insert(1.0, 'SoaPy Terminal')
+    output_window.configure(background='black', foreground='white')
+    
 try: 
     raise Exception # to test SoaPy Terminal
     # xterm terminal
@@ -437,13 +442,17 @@ try:
     termEnv = 'xterm'
     
 except:
+    # SoaPyTerminal()
     output_window = ScrolledText(root, height=10)
     output_window.pack(fill=BOTH, expand=1)
     output_window.insert(1.0, 'SoaPy Terminal')
     output_window.configure(background='black', foreground='white')
-    termEnv = 'SoaPy(T1.0)'
+    #remove above once SoaPy Terminal has been modulerised
+    termEnv = 'SoaPy'
     termType.configure(text=f'Terminal: ({termEnv})')
     termType.update()
+
+
 
 # tagging python structures
 # textField.tag_config("red", foreground = "red")
