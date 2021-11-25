@@ -72,7 +72,7 @@ class CustomText(Text):
 root = Tk()
 path = ''
 
-print(tkf.families())
+# print(tkf.families())
 # root.minsize(650, 600)
 # root.maxsize(650, 700)
 
@@ -282,7 +282,7 @@ textField = Text(root, padx=5, pady=5,undo=True)
 
 textField.pack(expand='true', pady=5, fill=BOTH)
 textField.pack_propagate(False)
-textField.configure(font=('Helvetica', 12))
+textField.configure(font=('nimbus sans', 10))
 textField.config(wrap='none')
 
 # lineNum.configure(font=('Helvetica', 12)) # uncomment for line numbering
@@ -469,9 +469,9 @@ class SoaPyTerminal():
     output_window = ScrolledText(root, height=10)
     output_window.pack(fill=BOTH, expand=1)
     
-    output_window.configure(background='black', foreground='white',
-     state='disabled', font=("Helvetica", 10))
-    output_window.insert(1.0, 'SoaPy Terminal')
+    output_window.configure(background='black', foreground='white', font=("Helvetica", 10))
+    output_window.insert(1.0, 'SoaPy Terminal - Version 1.0.0\n')
+    output_window.configure(state='disabled')
     
 try: 
     raise Exception # to test SoaPy Terminal
