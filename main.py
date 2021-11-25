@@ -357,19 +357,16 @@ def run():
         process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE, shell=True)
         output, error =  process.communicate()
-        # delete the previous text from
-        # output_windows
-        #######output_window.delete(1.0, END)
-        # insert the new output text in
-        # output_windows
-        SoaPyTerminal.output_window.config(state='normal')
-        SoaPyTerminal.output_window.insert(END, '\n')
-        SoaPyTerminal.output_window.insert(END, output) # needs fixing
-        # insert the error text in output_windows
-        # if there is error
-        SoaPyTerminal.output_window.insert(1.0, error)
-        SoaPyTerminal.output_window.update()
-        SoaPyTerminal.output_window.config(state='disabled')
+        
+        # SoaPyTerminal.output_window.config(state='normal')
+        # SoaPyTerminal.output_window.insert(END, '\n')
+        # SoaPyTerminal.output_window.insert(END, output) # needs fixing
+       
+        # SoaPyTerminal.output_window.insert(1.0, error)
+        # SoaPyTerminal.output_window.update()
+        # SoaPyTerminal.output_window.config(state='disabled')
+
+        SoaPyTerminal.InsertData(output, error)
     else: 
 
     #xterm code
