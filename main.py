@@ -321,7 +321,8 @@ def run():
         #######output_window.delete(1.0, END)
         # insert the new output text in
         # output_windows
-        SoaPyTerminal.output_windowoutput_window.insert(END, output + '\n') # needs fixing
+        SoaPyTerminal.output_window.insert(END, '\n')
+        SoaPyTerminal.output_window.insert(END, output) # needs fixing
         # insert the error text in output_windows
         # if there is error
         SoaPyTerminal.output_window.insert(1.0, error)
@@ -442,11 +443,11 @@ try:
     termEnv = 'xterm'
     
 except:
-    # SoaPyTerminal()
-    output_window = ScrolledText(root, height=10)
-    output_window.pack(fill=BOTH, expand=1)
-    output_window.insert(1.0, 'SoaPy Terminal')
-    output_window.configure(background='black', foreground='white')
+    SoaPyTerminal()
+    # output_window = ScrolledText(root, height=10)
+    # output_window.pack(fill=BOTH, expand=1)
+    # output_window.insert(1.0, 'SoaPy Terminal')
+    # output_window.configure(background='black', foreground='white')
     #remove above once SoaPy Terminal has been modulerised
     termEnv = 'SoaPy'
     termType.configure(text=f'Terminal: ({termEnv})')
