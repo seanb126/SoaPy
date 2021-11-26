@@ -44,58 +44,64 @@ def check_run():
     command=lambda: choice('c'))
     cancelButton.grid(row=0, column=1)
 
-def AppInfo(): # Reveals SoaPy information window
+# Reveals SoaPy information window
+def AppInfo(): 
     global INFO_APP_ICON, spyTerminal
+
     # window settings
     appInfo = Toplevel(root)
     appInfo.title('SoaPy IDE')
     appInfo.geometry('300x200')
     appInfo.resizable(height=False, width=False)
-    
+
+    # App image
     appImage = Label(appInfo, image = INFO_APP_ICON)
     appImage.pack(pady=5)
 
+    # App name + version label
     appName = Label(appInfo, text=f'SoaPy IDE {SOAPY_VERSION}')
     appName.config(font=('nimbus sans',15, 'bold'))
     appName.pack(pady= 5)
 
+    # Developer info label
     devName = Label(appInfo, text=f'Developed by {DEVELOPER_NAMES}')
     devName.config(font=('nimbus sans',10))
     devName.pack(pady= 5)
 
-
-
+# Function for opening files
 def openPy():
     try:
         global path
+        # Open file dialog settings
         file = fd.askopenfilename(title='Open Python File',
         filetypes=(('Python Files', '*.py'),('Text Files', '*.txt'), 
         ('All Files', '*.*')))
+
+        # File contents become readable
         file = open(file, 'r')
         data = file.read()
 
+        # Extracts files path and name
         filePath = os.path.realpath(str(file.name))
         print(filePath)
         fileName = os.path.basename(str(file.name))
-        # print(f'Full FileName: {fileName}')
-        # fileName = fileName.rpartition('.')
-        # ft = '.py'
-        # fileName = fileName[0]
+
+        # Updates main window title
         root.title(f'SoaPy - {fileName}')
+        # Updates global path var
         path = f'{filePath}'
-        # print(path)
-        textField.delete('1.0', END) # check if in case cancelled
+
+        # Deletes current textField content and inserts data from file
+        textField.delete('1.0', END)
         textField.insert(END, data)
         file.close()
-        # termAssistance() # re-activate for terminal help
-        # termHelp.update() # re-activate for terminal help
     except:
         print('! Error opening file !')
         print('i: Likely operation was cancelled by user')
 
-
-
+# Function fo saving file as
 def saveAsPy():
+    # Save file dialog settings
     pyFile = fd.asksaveasfilename(
         defaultextension='.*',
         title='Save File',
@@ -103,34 +109,24 @@ def saveAsPy():
     ('All Files', '*.*'))
     )
     if pyFile:
+        # extracts file path and name
         filePath = os.path.dirname(str(pyFile))
         fileName = os.path.basename(str(pyFile))
-        # fileName = os.path.basename(str(pyFile))
-        # ft = findExtention(fileName)
+        path = f'{filePath}' # updates global path value
+        root.title(f'SoaPy - {fileName}') # updates main window title
 
-        # fileName = fileName.rpartition('.py')
-        # # ft = '.py'
-        # fileName = fileName[0]
-        path = f'{filePath}'
-        root.title(f'SoaPy - {fileName}')
-    # save 
-        pyFile = open(pyFile, 'w')
-        pyFile.write(textField.get(1.0, END))
+        pyFile = open(pyFile, 'w') # opens file in write mode
+        pyFile.write(textField.get(1.0, END)) # writes data to file
         pyFile.close()   
-        # termAssistance()
-        # termHelp.update() # re-activate for terminal help
 
-
-
+# Function for starting a new file
 def newPy():
     global path
-    # add if statement to determine if file is empty
     textField.delete('1.0', END)
     root.title('SoaPy - untitled*')
     path = ''
-    # termAssistance()
-    # termHelp.update() # re-activate for terminal help
 
+# Function to pre-load all required app images
 def load_images():
     global APP_ICON, FILE_NEW_IMAGE, OPEN_FILE_ICON,SAVE_FILE_IMAGE
     global APP_INFO_IMAGE, RUN_FILE_ICON, TERMINAL_IMAGE,INFO_APP_ICON
@@ -141,57 +137,50 @@ def load_images():
     APP_INFO_IMAGE = PhotoImage(file = r'icons/information-fill.png')
     RUN_FILE_ICON = PhotoImage(file = r'icons/greenRun2.png')
     TERMINAL_IMAGE = PhotoImage(file = r'icons/terminal.png')
-    INFO_APP_ICON = PhotoImage(file ='icons/appIcon32.png')
+    INFO_APP_ICON = PhotoImage(file =r'icons/appIcon32.png')
  
-
+# Sets main window settings
 def window_settings(): # could be class?
     global root
     root.geometry('500x600')
     root.title('SoaPy' + ' - {}{}'.format(projectName, editStatus))
     root.tk.call('wm', 'iconphoto', root._w, APP_ICON)
 
+
+# Class for tool bar icons
+class ToolBarIcon():
+    def __init__(self, toolBar, image, side, command):
+
+        self.toolBar = toolBar # inherit tool bar frame
+        self.image = image # inherit icon image 
+        self.side = side # side of tool bar
+        self.command = command # select a command to execute
+
+        # Icon object settings
+        button = Button(toolBar, 
+        height=20, width=20, image=image,
+        highlightthickness = 0, bd = 0, bg = '#F8F6F0',
+        command=command)
+        button.pack(side=side, padx=5, pady= 10)
+
+# Class for top toolbar widget
 class ToolBar():
     def __init__(self, root):
         self.root = root
+        
+        # Establish tool bar frame
         toolBar = Frame(root, bg='#F8F6F0')
         toolBar.pack(side=TOP, fill=X)
-        # !could make a class for these to become reusable!
-        # Left Side
-        # Open File 
-        openFile = Button(toolBar, 
-        height=20, width=20, image=OPEN_FILE_ICON,
-        highlightthickness = 0, bd = 0, bg = '#F8F6F0',
-        command=openPy)
-        openFile.pack(side=LEFT, padx=5, pady= 10)
 
-        # New File
-        newFile = Button(toolBar, 
-        height=20, width=20, image=FILE_NEW_IMAGE,
-        highlightthickness = 0, bd = 0, bg = '#F8F6F0',
-        command=newPy)
-        newFile.pack(side=LEFT, padx=5, pady= 10)
+        # Left side
+        ToolBarIcon(toolBar, image=OPEN_FILE_ICON, side=LEFT, command=openPy) # open file
+        ToolBarIcon(toolBar, image=FILE_NEW_IMAGE, side=LEFT, command=newPy) # new file
+        ToolBarIcon(toolBar, image=SAVE_FILE_IMAGE, side=LEFT, command=saveAsPy) # save file as
+        
+        # Right side
+        ToolBarIcon(toolBar, image=INFO_APP_ICON, side=RIGHT, command=AppInfo) # open app info
+        ToolBarIcon(toolBar, image=RUN_FILE_ICON, side=RIGHT, command=run) # run script
 
-        # Save File As
-        saveFile = Button(toolBar, 
-        height=20, width=20, image=SAVE_FILE_IMAGE,
-        highlightthickness = 0, bd = 0, bg = '#F8F6F0',
-        command=saveAsPy)
-        saveFile.pack(side=LEFT, padx=5, pady= 10)
-
-        #Right Side
-        # App Information
-        infFile = Button(toolBar, 
-        height=20, width=20, image=APP_INFO_IMAGE,
-        highlightthickness = 0, bd = 0, bg = '#F8F6F0',
-        command=AppInfo) # will open app info dialog box
-        infFile.pack(side=RIGHT, padx=5, pady= 10)
-
-        # Run Script
-        runFile = Button(toolBar, 
-        height=20, width=20, image=RUN_FILE_ICON,
-        highlightthickness = 0, bd = 0, bg = '#F8F6F0',
-        command=runOperation)
-        runFile.pack(side=RIGHT, padx=5, pady= 10)
 
 class TextField():
     def __init__(self, root):
