@@ -12,17 +12,17 @@ Feel free to view/comment!
 ## Installation
 SoaPy can be run as any other traditional Python script, by typing inside a terminal:
 
-'''
+```linux
 python main.py
-'''
+```
 
 To avoid possible permission issues when saving files, it may be best to rely on the single executable file, within the bin directory.
 To run the executable on Linux, first you must 'cd' into the executables directory(bin folder if you cloned this repo)
 then type:
 
-'''linux
+```linux
 sudo ./SoaPy
-'''
+```
 
 For Windows users, please await a commit which contains the .exe file. 
 However that should be as easy to run, by just double clicking the executable file.
