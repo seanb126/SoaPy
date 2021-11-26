@@ -1,22 +1,23 @@
-# SoaPy | v1.0.1-Alpha
+# SoaPy Python IDE
 
 ## Introduction
-SoaPy is a piece of free and open source software (FOSS) developed in Python for Python developers.
-While in the early stages of development, the longterm goal of this project is to develop a usable Python IDE that follows
-the FOSS ideoligy.
+SoaPy is a functional Python IDE, which includes the ability to run your Python scripts inside an embedded terminal(SoaPy Terminal or xTerm)
+or an external terminal(xTerm, Windows cmd.exe, Gnome terminal).
 
-A simple roadmap has been established to give a generic idea of the future features
+SoaPy was developed using Python and the Tkinter package (see requirements.txt/ or main.py)
 
-Feel free to provide suggestions or report technical issues
+Feel free to view/comment!
 
 ## Current Issues
-Line numbering re-entered however while improved it still is out of synce when writing at the end of the view, also produces a horrible out of sync glitch when redrawing line numbers. 
-Current icon produces graphical error, a pure .ico file will need to be created.
+- Current app icon produces graphical error, a pure .ico file will need to be created.
 
 ## Roadmap
-- Re-implement line numbers. Current approach is not only derivative, however is prone to glitches after passing the 24th line/original yview
+- Re-implement line numbers
 - Terminal Selection. Allow the user to select their preferred terminal, either through a settings menu or by clicking the terminal icon
-- Implement terminal commands, i.e run, ls(search files)
-- Save over opened file instead of having to use save as menu
+- Implement SoaPy terminal commands, i.e run, ls(search files)
 - New font(install into app directory)
-- Colour tag text i.e 'print' is yellow
+- Colour tag text i.e 'print' is yellow in text field
+- Ability to check code for syntax / Python errors
+
+## License
+MIT License(see LICENSE.md)

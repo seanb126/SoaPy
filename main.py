@@ -10,6 +10,7 @@ Created on Mon Nov 22 18:58:49 2021
 from tkinter import *
 from tkinter import filedialog as fd
 import os
+import sys
 import subprocess
 from subprocess import Popen, PIPE
 import platform
@@ -18,34 +19,34 @@ from soapyterminal import SoaPyTerminal
 
 def choice(opt): # choice operand
     if opt == 's':
-        saveAsPy()
+        save_file()
     elif opt == 'c':
         print('Run operation cancelled')
-    pop.destroy()
+    msg_box.destroy()
 
 # message box for when attempting to run a non-saved file
 def check_run(): 
-    global pop
-    pop = Toplevel(root) # places at top level of main window
-    pop.title('Run Operation Warning')
-    pop.geometry('300x100')
-    pop.resizable(height=False, width=False)
-    pop_label = Label(pop, text='You must first save this file \n in order to run it')
-    pop_label.configure(font=('nimbus sans',12))
-    pop_label.pack(pady=10)
-    pop_frame = Frame(pop)
-    pop_frame.pack(pady=5)
+    global msg_box
+    msg_box = Toplevel(root) # places at top level of main window
+    msg_box.title('Run Operation Warning')
+    msg_box.geometry('300x100')
+    msg_box.resizable(height=False, width=False)
+    msg_box_label = Label(msg_box, text='You must first save this file \n in order to run it')
+    msg_box_label.configure(font=('nimbus sans',12))
+    msg_box_label.pack(pady=10)
+    msg_box_frame = Frame(msg_box)
+    msg_box_frame.pack(pady=5)
 
-    saveButton = Button(pop_frame, text='Save', 
+    saveButton = Button(msg_box_frame, text='Save', 
     command=lambda: choice('s'))
     saveButton.grid(row=0, column=0)
 
-    cancelButton = Button(pop_frame, text='Cancel', 
+    cancelButton = Button(msg_box_frame, text='Cancel', 
     command=lambda: choice('c'))
     cancelButton.grid(row=0, column=1)
 
 # Reveals SoaPy information window
-def AppInfo(): 
+def application_info(): 
     global INFO_APP_ICON, spyTerminal
 
     # window settings
@@ -69,7 +70,7 @@ def AppInfo():
     devName.pack(pady= 5)
 
 # Function for opening files
-def openPy():
+def open_file():
     try:
         global path
         # Open file dialog settings
@@ -100,27 +101,36 @@ def openPy():
         print('i: Likely operation was cancelled by user')
 
 # Function fo saving file as
-def saveAsPy():
-    # Save file dialog settings
-    pyFile = fd.asksaveasfilename(
-        defaultextension='.*',
-        title='Save File',
-        filetypes=(('Python Files', '*.py'),('Text Files', '*.txt'), 
-    ('All Files', '*.*'))
-    )
-    if pyFile:
-        # extracts file path and name
-        filePath = os.path.dirname(str(pyFile))
-        fileName = os.path.basename(str(pyFile))
-        path = f'{filePath}' # updates global path value
-        root.title(f'SoaPy - {fileName}') # updates main window title
+def save_file():
+    global path, root
+    # save file operation
+    if '.' not in path: # executes if no file previously opened
+    # Save file as dialog settings
+        pyFile = fd.asksaveasfilename(
+            defaultextension='.*',
+            title='Save File',
+            filetypes=(('Python Files', '*.py'),('Text Files', '*.txt'), 
+        ('All Files', '*.*'))
+        )
+        if pyFile:
+            # extracts file path and name
+            filePath = os.path.dirname(str(pyFile))
+            fileName = os.path.basename(str(pyFile))
+            path = f'{filePath}' # updates global path value
+            root.title(f'SoaPy - {fileName}') # updates main window title
 
-        pyFile = open(pyFile, 'w') # opens file in write mode
-        pyFile.write(textField.get(1.0, END)) # writes data to file
-        pyFile.close()   
+            pyFile = open(pyFile, 'w') # opens file in write mode
+            pyFile.write(textField.get(1.0, END)) # writes data to file
+            pyFile.close() 
+    elif '.' in path: # executes if a file has been opened into SoaPy
+        # saves file without dialog
+        file = open(path, 'w')
+        file.write(textField.get(1.0, END)) # writes data to file
+        file.close()
+
 
 # Function for starting a new file
-def newPy():
+def new_file():
     global path
     textField.delete('1.0', END)
     root.title('SoaPy - untitled*')
@@ -131,12 +141,18 @@ def load_images():
     global APP_ICON, FILE_NEW_IMAGE, OPEN_FILE_ICON,SAVE_FILE_IMAGE
     global APP_INFO_IMAGE, RUN_FILE_ICON, TERMINAL_IMAGE,INFO_APP_ICON
     APP_ICON = PhotoImage(file = r'icons/appIcon32.png')
-    FILE_NEW_IMAGE = PhotoImage(file = r'icons/file-add-fill.png')
-    OPEN_FILE_ICON = PhotoImage(file = r'icons/folder-open-fill.png')
-    SAVE_FILE_IMAGE = PhotoImage(file = r'icons/save-fill.png')
-    APP_INFO_IMAGE = PhotoImage(file = r'icons/information-fill.png')
-    RUN_FILE_ICON = PhotoImage(file = r'icons/greenRun2.png')
-    TERMINAL_IMAGE = PhotoImage(file = r'icons/terminal.png')
+    FILE_NEW_IMAGE = PhotoImage(file = r'icons/new-file-icon.png')
+    #FILE_NEW_IMAGE = PhotoImage(file = r'icons/file-add-fill.png')
+    OPEN_FILE_ICON = PhotoImage(file = r'icons/open-file-icon.png')
+    #OPEN_FILE_ICON = PhotoImage(file = r'icons/folder-open-fill.png')
+    SAVE_FILE_IMAGE = PhotoImage(file = r'icons/save-icon-soapy.png')
+    # SAVE_FILE_IMAGE = PhotoImage(file = r'icons/save-fill.png')
+    APP_INFO_IMAGE = PhotoImage(file = r'icons/info-icon.png')
+    #APP_INFO_IMAGE = PhotoImage(file = r'icons/information-fill.png')
+    RUN_FILE_ICON = PhotoImage(file = r'icons/run-file-icon.png')
+    #RUN_FILE_ICON = PhotoImage(file = r'icons/greenRun2.png')
+    TERMINAL_IMAGE = PhotoImage(file = r'icons/terminal-icon.png')
+    # TERMINAL_IMAGE = PhotoImage(file = r'icons/terminal.png')
     INFO_APP_ICON = PhotoImage(file =r'icons/appIcon32.png')
  
 # Sets main window settings
@@ -158,7 +174,7 @@ class ToolBarIcon():
 
         # Icon object settings
         button = Button(toolBar, 
-        height=20, width=20, image=image,
+        height=24, width=24, image=image,
         highlightthickness = 0, bd = 0, bg = '#F8F6F0',
         command=command)
         button.pack(side=side, padx=5, pady= 10)
@@ -173,12 +189,12 @@ class ToolBar():
         toolBar.pack(side=TOP, fill=X)
 
         # Left side
-        ToolBarIcon(toolBar, image=OPEN_FILE_ICON, side=LEFT, command=openPy) # open file
-        ToolBarIcon(toolBar, image=FILE_NEW_IMAGE, side=LEFT, command=newPy) # new file
-        ToolBarIcon(toolBar, image=SAVE_FILE_IMAGE, side=LEFT, command=saveAsPy) # save file as
+        ToolBarIcon(toolBar, image=OPEN_FILE_ICON, side=LEFT, command=open_file) # open file
+        ToolBarIcon(toolBar, image=FILE_NEW_IMAGE, side=LEFT, command=new_file) # new file
+        ToolBarIcon(toolBar, image=SAVE_FILE_IMAGE, side=LEFT, command=save_file) # save file as
         
         # Right side
-        ToolBarIcon(toolBar, image=INFO_APP_ICON, side=RIGHT, command=AppInfo) # open app info
+        ToolBarIcon(toolBar, image=APP_INFO_IMAGE, side=RIGHT, command=application_info) # open app info
         ToolBarIcon(toolBar, image=RUN_FILE_ICON, side=RIGHT, command=runOperation) # run script
 
 # Class for text field widget
@@ -206,12 +222,17 @@ class TerminalBar():
         
         termBar =Frame(root, bg='#F8F6F0')
         termBar.pack(fill=X)
-        termLabel = Label(termBar, image = TERMINAL_IMAGE, background='#F8F6F0')
-        termLabel.pack(pady=5, padx=5, fill='both', side=LEFT)
+        # termLabel = Label(termBar, image = TERMINAL_IMAGE, background='#F8F6F0')
+        # termLabel.pack(pady=5, padx=5, fill='both', side=LEFT)
 
         # terminal label
         termType = Label(termBar, text=f'Terminal: ({termEnv})', background='#F8F6F0')
         termType.pack(pady=5, padx=5, fill='both', side=LEFT)
+
+        # Python version
+        PYTHON_VERSION = str(sys.version[0:5])
+        python_label = Label(termBar, text=f'Python {PYTHON_VERSION}', background='#F8F6F0')
+        python_label.pack(pady=5, padx=5, fill='both', side=RIGHT)
 
 # Class for embedding the terminal
 class LoadTerminal():
@@ -305,7 +326,7 @@ def runOperation(event=None):
 
 # bootstrap
 if __name__ == '__main__':
-    
+
     # root for Tkinter application
     root = Tk() # move to class
     
