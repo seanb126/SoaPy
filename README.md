@@ -10,18 +10,13 @@ A simple roadmap has been established to give a generic idea of the future featu
 Feel free to provide suggestions or report technical issues
 
 ## Current Issues
-While the embedded terminal is functional, communicating through stdin or 'communicate' is not working as expected, often freezing the app. This does open the door for new oppurtunities however. The run button now opens a new terminal window based on OS and executes the code successfully, elsewhere this could encourage users to become accustomed to terminals, by providing advice on what to write in the embedded terminal i.e 'python main.py'.
-
-The code is frankensteined together on main.py, and in desperate need of cleaning/modulerising.
-
+Line numbering re-entered however while improved it still is out of synce when writing at the end of the view, also produces a horrible out of sync glitch when redrawing line numbers. 
 Current icon produces graphical error, a pure .ico file will need to be created.
 
 ## Roadmap
-- Establish basic UI (including novel icons and line numbering)
-- Provide file functionality (saving, loading, etc)
-- Develop and implement code analysis
-- Provide access to Python environment / system terminal
-- Implement Source Control through Git
-- Allow for package extensions
-- Automatic file backups
-- Terminal recommendations
+- Re-implement line numbers. Current approach is not only derivative, however is prone to glitches after passing the 24th line/original yview
+- Terminal Selection. Allow the user to select their preferred terminal, either through a settings menu or by clicking the terminal icon
+- Implement terminal commands, i.e run, ls(search files)
+- Save over opened file instead of having to use save as menu
+- New font(install into app directory)
+- Colour tag text i.e 'print' is yellow
