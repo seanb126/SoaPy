@@ -179,31 +179,31 @@ class ToolBar():
         
         # Right side
         ToolBarIcon(toolBar, image=INFO_APP_ICON, side=RIGHT, command=AppInfo) # open app info
-        ToolBarIcon(toolBar, image=RUN_FILE_ICON, side=RIGHT, command=run) # run script
+        ToolBarIcon(toolBar, image=RUN_FILE_ICON, side=RIGHT, command=runOperation) # run script
 
-
+# Class for text field widget
 class TextField():
     def __init__(self, root):
         global textField
         self.root = root
+        # Establish text frame
+        # important when implementing line numbers
         TEXT_FRAME = Frame(root)
-
-        # EstablishNumbers(parent=TEXT_FRAME)
-        
         TEXT_FRAME.pack(fill=BOTH)
-        textField = Text(TEXT_FRAME,undo=True)
-        # wrap='word'
 
+        # Establish text field
+        textField = Text(TEXT_FRAME,undo=True)
         textField.pack(expand='true', fill=BOTH)
         textField.pack_propagate(False)
         textField.configure(font=('nimbus sans', 10))
         textField.config(wrap='none')
 
+# Class for Terminal Bar
 class TerminalBar():
     def __init__(self, root):
         global termType
         self.root = root
-        # terminal image
+        
         termBar =Frame(root, bg='#F8F6F0')
         termBar.pack(fill=X)
         termLabel = Label(termBar, image = TERMINAL_IMAGE, background='#F8F6F0')
@@ -213,6 +213,7 @@ class TerminalBar():
         termType = Label(termBar, text=f'Terminal: ({termEnv})', background='#F8F6F0')
         termType.pack(pady=5, padx=5, fill='both', side=LEFT)
 
+# Class for embedding the terminal
 class LoadTerminal():
     def __init__(self, root):
         global termEnv
@@ -246,8 +247,7 @@ class LoadTerminal():
             termType.configure(text=f'Terminal: ({termEnv})')
             termType.update()
 
-
-
+# Call function to run scripts
 def run():
     if termEnv == 'SoaPy':
         # 
