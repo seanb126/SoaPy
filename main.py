@@ -101,23 +101,32 @@ def openPy():
 
 # Function fo saving file as
 def saveAsPy():
-    # Save file dialog settings
-    pyFile = fd.asksaveasfilename(
-        defaultextension='.*',
-        title='Save File',
-        filetypes=(('Python Files', '*.py'),('Text Files', '*.txt'), 
-    ('All Files', '*.*'))
-    )
-    if pyFile:
-        # extracts file path and name
-        filePath = os.path.dirname(str(pyFile))
-        fileName = os.path.basename(str(pyFile))
-        path = f'{filePath}' # updates global path value
-        root.title(f'SoaPy - {fileName}') # updates main window title
+    global path, root
+    # save file operation
+    if '.' not in path: # executes if no file previously opened
+    # Save file as dialog settings
+        pyFile = fd.asksaveasfilename(
+            defaultextension='.*',
+            title='Save File',
+            filetypes=(('Python Files', '*.py'),('Text Files', '*.txt'), 
+        ('All Files', '*.*'))
+        )
+        if pyFile:
+            # extracts file path and name
+            filePath = os.path.dirname(str(pyFile))
+            fileName = os.path.basename(str(pyFile))
+            path = f'{filePath}' # updates global path value
+            root.title(f'SoaPy - {fileName}') # updates main window title
 
-        pyFile = open(pyFile, 'w') # opens file in write mode
-        pyFile.write(textField.get(1.0, END)) # writes data to file
-        pyFile.close()   
+            pyFile = open(pyFile, 'w') # opens file in write mode
+            pyFile.write(textField.get(1.0, END)) # writes data to file
+            pyFile.close() 
+    elif '.' in path: # executes if a file has been opened into SoaPy
+        # saves file without dialog
+        file = open(path, 'w')
+        file.write(textField.get(1.0, END)) # writes data to file
+        file.close()
+
 
 # Function for starting a new file
 def newPy():
@@ -178,7 +187,7 @@ class ToolBar():
         ToolBarIcon(toolBar, image=SAVE_FILE_IMAGE, side=LEFT, command=saveAsPy) # save file as
         
         # Right side
-        ToolBarIcon(toolBar, image=INFO_APP_ICON, side=RIGHT, command=AppInfo) # open app info
+        ToolBarIcon(toolBar, image=APP_INFO_IMAGE, side=RIGHT, command=AppInfo) # open app info
         ToolBarIcon(toolBar, image=RUN_FILE_ICON, side=RIGHT, command=runOperation) # run script
 
 # Class for text field widget
@@ -305,7 +314,7 @@ def runOperation(event=None):
 
 # bootstrap
 if __name__ == '__main__':
-    
+
     # root for Tkinter application
     root = Tk() # move to class
     
