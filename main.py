@@ -290,6 +290,7 @@ def saveAsPy():
 
 
 def newPy():
+    global path
     # add if statement to determine if file is empty
     textField.delete('1.0', END)
     root.title('SoaPy - untitled*')

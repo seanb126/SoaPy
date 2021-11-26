@@ -13,11 +13,10 @@ Feel free to provide suggestions or report technical issues
 Line numbering re-entered however while improved it still is out of synce when writing at the end of the view, also produces a horrible out of sync glitch when redrawing line numbers. 
 Current icon produces graphical error, a pure .ico file will need to be created.
 
-Not an issue per-se however for terminal entries, just use another text field under the terminal to enter commands.
-
 ## Roadmap
 - Re-implement line numbers. Current approach is not only derivative, however is prone to glitches after passing the 24th line/original yview
 - Terminal Selection. Allow the user to select their preferred terminal, either through a settings menu or by clicking the terminal icon
 - Implement terminal commands, i.e run, ls(search files)
 - Save over opened file instead of having to use save as menu
-- 
+- New font(install into app directory)
+- Colour tag text i.e 'print' is yellow
