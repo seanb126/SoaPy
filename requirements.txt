@@ -1,5 +1,8 @@
 # Requirements 
-dveloped using Python 3.9.7 | base Conda/Anaconda3
+* developed using Python 3.9.7 | base Conda/Anaconda3
+* (Including:)subprocess, os, sys, platform
+
+# Packages
 * Tkinter 8.6.11
-* subprocess, os, sys
+* SoaPy Terminal (inside repository)
 

@@ -5,7 +5,6 @@ SoaPy is a functional Python IDE, which includes the ability to run your Python 
 or an external terminal(xTerm, Windows cmd.exe, Gnome terminal).
 
 SoaPy was developed using Python and the Tkinter package (see requirements.txt/ or main.py)
-Icons used are from https://remixicon.com/.
 
 Feel free to view/comment!
 

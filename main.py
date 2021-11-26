@@ -10,6 +10,7 @@ Created on Mon Nov 22 18:58:49 2021
 from tkinter import *
 from tkinter import filedialog as fd
 import os
+import sys
 import subprocess
 from subprocess import Popen, PIPE
 import platform
@@ -45,7 +46,7 @@ def check_run():
     cancelButton.grid(row=0, column=1)
 
 # Reveals SoaPy information window
-def AppInfo(): 
+def application_info(): 
     global INFO_APP_ICON, spyTerminal
 
     # window settings
@@ -140,12 +141,18 @@ def load_images():
     global APP_ICON, FILE_NEW_IMAGE, OPEN_FILE_ICON,SAVE_FILE_IMAGE
     global APP_INFO_IMAGE, RUN_FILE_ICON, TERMINAL_IMAGE,INFO_APP_ICON
     APP_ICON = PhotoImage(file = r'icons/appIcon32.png')
-    FILE_NEW_IMAGE = PhotoImage(file = r'icons/file-add-fill.png')
-    OPEN_FILE_ICON = PhotoImage(file = r'icons/folder-open-fill.png')
-    SAVE_FILE_IMAGE = PhotoImage(file = r'icons/save-fill.png')
-    APP_INFO_IMAGE = PhotoImage(file = r'icons/information-fill.png')
-    RUN_FILE_ICON = PhotoImage(file = r'icons/greenRun2.png')
-    TERMINAL_IMAGE = PhotoImage(file = r'icons/terminal.png')
+    FILE_NEW_IMAGE = PhotoImage(file = r'icons/new-file-icon.png')
+    #FILE_NEW_IMAGE = PhotoImage(file = r'icons/file-add-fill.png')
+    OPEN_FILE_ICON = PhotoImage(file = r'icons/open-file-icon.png')
+    #OPEN_FILE_ICON = PhotoImage(file = r'icons/folder-open-fill.png')
+    SAVE_FILE_IMAGE = PhotoImage(file = r'icons/save-icon-soapy.png')
+    # SAVE_FILE_IMAGE = PhotoImage(file = r'icons/save-fill.png')
+    APP_INFO_IMAGE = PhotoImage(file = r'icons/info-icon.png')
+    #APP_INFO_IMAGE = PhotoImage(file = r'icons/information-fill.png')
+    RUN_FILE_ICON = PhotoImage(file = r'icons/run-file-icon.png')
+    #RUN_FILE_ICON = PhotoImage(file = r'icons/greenRun2.png')
+    TERMINAL_IMAGE = PhotoImage(file = r'icons/terminal-icon.png')
+    # TERMINAL_IMAGE = PhotoImage(file = r'icons/terminal.png')
     INFO_APP_ICON = PhotoImage(file =r'icons/appIcon32.png')
  
 # Sets main window settings
@@ -167,7 +174,7 @@ class ToolBarIcon():
 
         # Icon object settings
         button = Button(toolBar, 
-        height=20, width=20, image=image,
+        height=24, width=24, image=image,
         highlightthickness = 0, bd = 0, bg = '#F8F6F0',
         command=command)
         button.pack(side=side, padx=5, pady= 10)
@@ -187,7 +194,7 @@ class ToolBar():
         ToolBarIcon(toolBar, image=SAVE_FILE_IMAGE, side=LEFT, command=save_file) # save file as
         
         # Right side
-        ToolBarIcon(toolBar, image=APP_INFO_IMAGE, side=RIGHT, command=AppInfo) # open app info
+        ToolBarIcon(toolBar, image=APP_INFO_IMAGE, side=RIGHT, command=application_info) # open app info
         ToolBarIcon(toolBar, image=RUN_FILE_ICON, side=RIGHT, command=runOperation) # run script
 
 # Class for text field widget
@@ -215,12 +222,17 @@ class TerminalBar():
         
         termBar =Frame(root, bg='#F8F6F0')
         termBar.pack(fill=X)
-        termLabel = Label(termBar, image = TERMINAL_IMAGE, background='#F8F6F0')
-        termLabel.pack(pady=5, padx=5, fill='both', side=LEFT)
+        # termLabel = Label(termBar, image = TERMINAL_IMAGE, background='#F8F6F0')
+        # termLabel.pack(pady=5, padx=5, fill='both', side=LEFT)
 
         # terminal label
         termType = Label(termBar, text=f'Terminal: ({termEnv})', background='#F8F6F0')
         termType.pack(pady=5, padx=5, fill='both', side=LEFT)
+
+        # Python version
+        PYTHON_VERSION = str(sys.version[0:5])
+        python_label = Label(termBar, text=f'Python {PYTHON_VERSION}', background='#F8F6F0')
+        python_label.pack(pady=5, padx=5, fill='both', side=RIGHT)
 
 # Class for embedding the terminal
 class LoadTerminal():
