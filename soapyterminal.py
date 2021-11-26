@@ -3,10 +3,14 @@ from tkinter import *
 from tkinter.scrolledtext import ScrolledText
 
 
+
 class SoaPyTerminal():
     def __init__(self, root):
-        global output_window
-        # self.output_window = output_window
+        global output_window, spyTerminal
+
+        # SoaPy terminal version
+        spyTerminal = '1.0.0'
+
         self.root = root
         output_window = ScrolledText(root, height=10)
         output_window.pack(fill=BOTH, expand=1)

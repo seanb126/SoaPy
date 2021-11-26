@@ -6,154 +6,15 @@ Created on Mon Nov 22 18:58:49 2021
 @author: Seanb126
 """
 
-
-from tkinter import * # change to as tk
+# Import Libraries
+from tkinter import *
 from tkinter import filedialog as fd
-from tkinter import font
-from tkinter.scrolledtext import ScrolledText
 import os
-import sys
 import subprocess
 from subprocess import Popen, PIPE
 import platform
-from typing import ContextManager
 import tkinter.font as tkf
 from soapyterminal import SoaPyTerminal
-
-
-
-
-
-# modulerise these functions
-# move out of main file create window file
-# move core files to 'core folder'
-# create 'extended' file class for mods
-
-
-
-
-
-
-# add to bootstrap
-# root = Tk()
-# path = ''
-# load_images()
-
-# print(tkf.families())
-# root.minsize(650, 600)
-# root.maxsize(650, 700)
-
-# root.geometry('500x600')
-
-
-def OnScroll(event=None):
-            # widget = event.widget
-            # other = textField if widget == lineNum else lineNum
-            # other.yview_moveto(widget.yview()[0])
-            # other.mark_set('insert', widget.index('insert'))
-
-
-            lineNum.yview_moveto(textField.yview()[0])
-
-def get_numbers(event=None):
-            global textField
-            output = ''
-            row, col = textField.index('end').split('.')
-            for i in range(1, int(row)):
-                output += str(i) + '\n'
-
-            return output
-
-def update_numbers(event=None):
-        global lineNum, lineNum_bar
-        OnScroll
-        # def get_numbers(event=None):
-        #     output = ''
-        #     row, col = textField.index('end').split('.')
-        #     for i in range(1, int(row)):
-        #         output += str(i) + '\n'
-
-        #     return output
-        
-        lineNum_bar = get_numbers()
-        lineNum.config(state='normal')
-        lineNum.delete(1.0, END)
-        lineNum.insert(1.0, lineNum_bar)
-        lineNum.config(state='disabled')
-        OnScroll
-        
-        
-
-class EstablishNumbers():
-    def __init__(self, parent):
-        self.parent = parent
-        global lineNum, lineNum_bar
-        lineNum = Text(
-                parent, width=4, padx=0, state='disabled',
-                takefocus=0, background='grey', wrap='none'
-            )
-        # lineNum.tag_add('center', '1.0', 'end')
-        lineNum.pack(side='left', fill='y') # uncomment for line numbering
-
-class LineNumbers():
-    def __init__(self, root):
-        self.root = root
-        global lineNum, lineNum_bar
-        # lineNum = Text(
-        #     root, width=4, padx=0, state='disabled',
-        #     takefocus=0, background='grey', wrap='none'
-        # )
-        # lineNum.pack(side='left', fill='y') # uncomment for line numbering
-        # def get_numbers(event=None):
-        #     global textField
-        #     output = ''
-        #     row, col = textField.index('end').split('.')
-        #     for i in range(1, int(row)):
-        #         output += str(i) + '\n'
-
-        #     return output
-        lineNum_bar = get_numbers()
-        
-        lineNum.configure(font=('nimbus sans', 10)) # uncomment for line numbering
-
-        
-
-        textField.bind_all("<KeyRelease-Up>", OnScroll)
-        textField.bind_all("<KeyRelease-Down>", OnScroll)
-        lineNum.bind_all("<KeyRelease-Up>", OnScroll)
-        lineNum.bind_all("<KeyRelease-Down>", OnScroll)
-
-        for widget in (textField, lineNum):
-                bindtags = list(widget.bindtags())
-                bindtags.insert(2, "custom")
-                widget.bindtags(tuple(bindtags))
-                widget.bind_all('<Any-KeyPress>', update_numbers)
-                
-
-                widget.bind_class("custom", "<Up>", OnScroll)
-                widget.bind_all('<Button-5>', OnScroll)
-                widget.bind_all('<Button-4>', OnScroll)
-                widget.bind_class("custom", "<Down>", OnScroll)
-    
-    
-    # def update_numbers(event=None):
-    #     global lineNum, lineNum_bar
-    #     # def get_numbers(event=None):
-    #     #     output = ''
-    #     #     row, col = textField.index('end').split('.')
-    #     #     for i in range(1, int(row)):
-    #     #         output += str(i) + '\n'
-
-    #     #     return output
-    #     # lineNum_bar = get_numbers()
-    #     lineNum.config(state='normal')
-    #     lineNum.delete(1.0, END)
-    #     lineNum.insert(1.0, lineNum_bar)
-    #     lineNum.config(state='disabled')
-    
-
-    
-
 
 def choice(opt): # choice operand
     if opt == 's':
@@ -162,17 +23,16 @@ def choice(opt): # choice operand
         print('Run operation cancelled')
     pop.destroy()
 
-
-def check_run(): # message box for when attempting to run a non-saved file
+# message box for when attempting to run a non-saved file
+def check_run(): 
     global pop
-    pop = Toplevel(root)
+    pop = Toplevel(root) # places at top level of main window
     pop.title('Run Operation Warning')
     pop.geometry('300x100')
     pop.resizable(height=False, width=False)
     pop_label = Label(pop, text='You must first save this file \n in order to run it')
-    pop_label.configure(font=('Helvetica',12))
+    pop_label.configure(font=('nimbus sans',12))
     pop_label.pack(pady=10)
-
     pop_frame = Frame(pop)
     pop_frame.pack(pady=5)
 
@@ -183,37 +43,25 @@ def check_run(): # message box for when attempting to run a non-saved file
     cancelButton = Button(pop_frame, text='Cancel', 
     command=lambda: choice('c'))
     cancelButton.grid(row=0, column=1)
-    # termAssistance() # re-activate for terminal help
-    # hlpLabel.update() # re-activate for terminal help
 
-def AppInfo(): # message box for when attempting to run a non-saved file
-    # global pop2
-    global INFO_APP_ICON
+def AppInfo(): # Reveals SoaPy information window
+    global INFO_APP_ICON, spyTerminal
+    # window settings
     appInfo = Toplevel(root)
     appInfo.title('SoaPy IDE')
-    appInfo.geometry('400x200')
+    appInfo.geometry('300x200')
     appInfo.resizable(height=False, width=False)
-
-    # resAppImage = Image.open('icons/appIcon30.png')
-    # resAppImage.resize((20, 20))
-    # img = ImageTk.PhotoImage(resAppImage)
     
     appImage = Label(appInfo, image = INFO_APP_ICON)
-    appImage.image = 'icons/appIcon32.png'
     appImage.pack(pady=5)
 
-    appName = Label(appInfo, text='SoaPy IDE 1.0.0')
+    appName = Label(appInfo, text=f'SoaPy IDE {SOAPY_VERSION}')
     appName.config(font=('nimbus sans',15, 'bold'))
     appName.pack(pady= 5)
 
-
-    pyv = platform.python_build
-    spyTerminal = '1.0.0'
-    detInfo = Label(appInfo, text=f'SoaPy Terminal: {spyTerminal}\n Developed by Seanb126')
-    detInfo.config(font=('nimbus sans',12))
-    detInfo.pack(pady=5)
-        # termAssistance() # re-activate for terminal help
-        # hlpLabel.update() # re-activate for terminal help
+    devName = Label(appInfo, text=f'Developed by {DEVELOPER_NAMES}')
+    devName.config(font=('nimbus sans',10))
+    devName.pack(pady= 5)
 
 
 
@@ -244,21 +92,6 @@ def openPy():
     except:
         print('! Error opening file !')
         print('i: Likely operation was cancelled by user')
-        
-
-# class findExtention(Variable):
-#     def find(Variable):
-#         if '.py' in Variable:
-#             print('File is a Python Script')
-#             value = '.py'
-#         elif '.txt' in Variable:
-#             print('File is a Text File')
-#             value = '.txt'
-#         else:
-#             print('Filetype is unregistered...')
-#             print('Attempting to open')
-#             value = '.???'
-#         return value
 
 
 
@@ -396,40 +229,46 @@ class LoadTerminal():
         global termEnv
         self.root = root
         try: 
-            # raise Exception # to test SoaPy Terminal
+            raise Exception # Used to test SoaPy Terminal
+
             # xterm terminal
             term = Frame(root, height=200, width=200)
             term.pack(fill='both', padx=1, pady=1, expand='yes')
-            # expand='yes', fill='both'
+
+            # Embeds terminal
             wid = term.winfo_id()
             subprocess.Popen(['xterm','-into',str(wid)],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-            #,'-geometry', '300x10'
-            termEnv = 'xTerm'
+
+            # informs program that xTerm is to be used
+            termEnv = 'xTerm' 
+
+            # Updates terminal bar label of the selected terminal
             termType.configure(text=f'Terminal: ({termEnv})')
             termType.update()
             
         except:
-            SoaPyTerminal(root)
-            # output_window = ScrolledText(root, height=10)
-            # output_window.pack(fill=BOTH, expand=1)
-            # output_window.insert(1.0, 'SoaPy Terminal')
-            # output_window.configure(background='black', foreground='white')
-            #remove above once SoaPy Terminal has been modulerised
+            SoaPyTerminal(root) # Embeds SoaPy terminal 
+
+            # Informs program that SoaPy terminal is to be used
             termEnv = 'SoaPy'
+
+            # Updates terminal bar label of the selected terminal
             termType.configure(text=f'Terminal: ({termEnv})')
             termType.update()
-#text field Terminal
 
 
 
 def run():
     if termEnv == 'SoaPy':
+        # 
         cmd = f'python {path}'
         process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE, shell=True)
         output, error =  process.communicate()
-        SoaPyTerminal.InsertData(output, error)
+        SoaPyTerminal.InsertData(output, error) # inserts data into SoaPy Terminal
+
+        # Adapts the Run process if SoaPy Terminal isn't used
     else: 
         if USER_SYSTEM == 'Linux':
             try:
@@ -460,7 +299,7 @@ def run():
             except:
                 print('Xterm is not installed on this device')
 
-        cmd = f'python {path}'
+        cmd = f'python {path}' # remove
 
 
 def runOperation(event=None):
@@ -487,6 +326,8 @@ if __name__ == '__main__':
     projectName = 'untitled'
     editStatus = '*'
     termEnv = '' # change based on loadup function
+    SOAPY_VERSION = '1.0.0'
+    DEVELOPER_NAMES = 'Seanb126'
 
     # Setup Functions
     load_images() 
