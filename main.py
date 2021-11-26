@@ -75,13 +75,15 @@ def update_numbers(event=None):
         lineNum.insert(1.0, lineNum_bar)
         lineNum.config(state='disabled')
 
-def establish_linenumbers():
-    global lineNum, lineNum_bar
-    lineNum = Text(
-            root, width=4, padx=0, state='disabled',
-            takefocus=0, background='grey', wrap='none'
-        )
-    lineNum.pack(side='left', fill='y') # uncomment for line numbering
+class EstablishNumbers():
+    def __init__(self, parent):
+        self.parent = parent
+        global lineNum, lineNum_bar
+        lineNum = Text(
+                parent, width=4, padx=0, state='disabled',
+                takefocus=0, background='grey', wrap='none'
+            )
+        lineNum.pack(side='left', fill='y') # uncomment for line numbering
 
 class LineNumbers():
     def __init__(self, root):
@@ -102,7 +104,7 @@ class LineNumbers():
         #     return output
         lineNum_bar = get_numbers()
         
-        lineNum.configure(font=('Helvetica', 12)) # uncomment for line numbering
+        lineNum.configure(font=('nimbus sans', 10)) # uncomment for line numbering
 
         
 
@@ -349,10 +351,13 @@ class TextField():
     def __init__(self, root):
         global textField
         self.root = root
-        textField = Text(root, padx=5, pady=5,undo=True)
+        TEXT_FRAME = Frame(root)
+        EstablishNumbers(parent=TEXT_FRAME)
+        TEXT_FRAME.pack()
+        textField = Text(TEXT_FRAME,undo=True)
         # wrap='word'
 
-        textField.pack(expand='true', pady=5, fill=BOTH)
+        textField.pack(expand='true', fill=BOTH)
         textField.pack_propagate(False)
         textField.configure(font=('nimbus sans', 10))
         textField.config(wrap='none')
@@ -466,7 +471,6 @@ if __name__ == '__main__':
     window_settings()
     # Widgets
     ToolBar(root)
-    establish_linenumbers()
     TextField(root)
     LineNumbers(root)
     textField.bind_all('<Any-KeyPress>', update_numbers)
