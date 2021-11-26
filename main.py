@@ -304,6 +304,7 @@ class TerminalBar():
 
 class LoadTerminal():
     def __init__(self, root):
+        global termEnv
         self.root = root
         try: 
             raise Exception # to test SoaPy Terminal
