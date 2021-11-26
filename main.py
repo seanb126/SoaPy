@@ -7,7 +7,7 @@ Created on Mon Nov 22 18:58:49 2021
 """
 
 
-from tkinter import *
+from tkinter import * # change to as tk
 from tkinter import filedialog as fd
 from tkinter import font
 from tkinter.scrolledtext import ScrolledText
@@ -29,41 +29,41 @@ from soapyterminal import SoaPyTerminal
 # move core files to 'core folder'
 # create 'extended' file class for mods
 
-USER_SYSTEM = platform.system()
+
 
 
 
 
 # add to bootstrap
-root = Tk()
-path = ''
-load_images()
+# root = Tk()
+# path = ''
+# load_images()
 
 # print(tkf.families())
 # root.minsize(650, 600)
 # root.maxsize(650, 700)
 
-root.geometry('500x600')
+# root.geometry('500x600')
 
-def get_numbers(event=None):
-    output = ''
-    row, col = textField.index('end').split('.')
-    for i in range(1, int(row)):
-        output += str(i) + '\n'
+# def get_numbers(event=None):
+#     output = ''
+#     row, col = textField.index('end').split('.')
+#     for i in range(1, int(row)):
+#         output += str(i) + '\n'
 
-    return output
+#     return output
 
-def update_numbers(event=None):
-    lineNum_bar = get_numbers()
-    lineNum.config(state='normal')
-    lineNum.delete(1.0, END)
-    lineNum.insert(1.0, lineNum_bar)
-    lineNum.config(state='disabled')
+# def update_numbers(event=None):
+#     lineNum_bar = get_numbers()
+#     lineNum.config(state='normal')
+#     lineNum.delete(1.0, END)
+#     lineNum.insert(1.0, lineNum_bar)
+#     lineNum.config(state='disabled')
 
-lineNum = Text(
-    root, width=4, padx=0, state='disabled',
-    takefocus=0, background='grey', wrap='none'
-)
+# lineNum = Text(
+#     root, width=4, padx=0, state='disabled',
+#     takefocus=0, background='grey', wrap='none'
+# )
 
 
 def choice(opt): # choice operand
@@ -147,8 +147,8 @@ def openPy():
         root.title(f'SoaPy - {fileName}')
         path = f'{filePath}'
         # print(path)
-        textField.delete('1.0', END) # check if in case cancelled
-        textField.insert(END, data)
+        TextField.textField.delete('1.0', END) # check if in case cancelled
+        TextField.textField.insert(END, data)
         file.close()
         # termAssistance() # re-activate for terminal help
         # termHelp.update() # re-activate for terminal help
@@ -193,19 +193,19 @@ def saveAsPy():
         root.title(f'SoaPy - {fileName}')
     # save 
         pyFile = open(pyFile, 'w')
-        pyFile.write(textField.get(1.0, END))
+        pyFile.write(TextField.textField.get(1.0, END))
         pyFile.close()   
-        termAssistance()
+        # termAssistance()
         # termHelp.update() # re-activate for terminal help
 
 
 
 def newPy():
     # add if statement to determine if file is empty
-    textField.delete('1.0', END)
+    TextField.textField.delete('1.0', END)
     root.title('SoaPy - untitled*')
     path = ''
-    termAssistance()
+    # termAssistance()
     # termHelp.update() # re-activate for terminal help
 
 def load_images():
@@ -220,28 +220,113 @@ def load_images():
     TERMINAL_IMAGE = PhotoImage(file = r'icons/terminal.png')
     INFO_APP_ICON = PhotoImage(file ='icons/appIcon32.png')
  
-# reflects specified file name else = 'untitled'
-projectName = 'untitled'
-# reflects edit status '*' if unsaved else ''
-editStatus = '*'
-# include change detection stream
+
+def window_settings(): # could be class?
+    global root
+    root.geometry('500x600')
+    root.title('SoaPy' + ' - {}{}'.format(projectName, editStatus))
+    root.tk.call('wm', 'iconphoto', root._w, APP_ICON)
+
+class ToolBar():
+    def __init__(self, root):
+        self.root = root
+        toolBar = Frame(root, bg='#F8F6F0')
+        toolBar.pack(side=TOP, fill=X)
+        # !could make a class for these to become reusable!
+        # Left Side
+        # Open File 
+        openFile = Button(toolBar, 
+        height=20, width=20, image=OPEN_FILE_ICON,
+        highlightthickness = 0, bd = 0, bg = '#F8F6F0',
+        command=openPy)
+        openFile.pack(side=LEFT, padx=5, pady= 10)
+
+        # New File
+        newFile = Button(toolBar, 
+        height=20, width=20, image=FILE_NEW_IMAGE,
+        highlightthickness = 0, bd = 0, bg = '#F8F6F0',
+        command=newPy)
+        newFile.pack(side=LEFT, padx=5, pady= 10)
+
+        # Save File As
+        saveFile = Button(toolBar, 
+        height=20, width=20, image=SAVE_FILE_IMAGE,
+        highlightthickness = 0, bd = 0, bg = '#F8F6F0',
+        command=saveAsPy)
+        saveFile.pack(side=LEFT, padx=5, pady= 10)
+
+        #Right Side
+        # App Information
+        infFile = Button(toolBar, 
+        height=20, width=20, image=APP_INFO_IMAGE,
+        highlightthickness = 0, bd = 0, bg = '#F8F6F0',
+        command=AppInfo) # will open app info dialog box
+        infFile.pack(side=RIGHT, padx=5, pady= 10)
+
+        # Run Script
+        runFile = Button(toolBar, 
+        height=20, width=20, image=RUN_FILE_ICON,
+        highlightthickness = 0, bd = 0, bg = '#F8F6F0',
+        command=runOperation)
+        runFile.pack(side=RIGHT, padx=5, pady= 10)
+
+class TextField():
+    def __init__(self, root):
+        self.root = root
+        textField = Text(root, padx=5, pady=5,undo=True)
+        # wrap='word'
+
+        # textField.bind('<Any-KeyPress>', update_numbers) # uncomment for line numbering
+
+        textField.pack(expand='true', pady=5, fill=BOTH)
+        textField.pack_propagate(False)
+        textField.configure(font=('nimbus sans', 10))
+        textField.config(wrap='none')
+
+class TerminalBar():
+    def __init__(self, root):
+        global termType
+        self.root = root
+        # terminal image
+        termBar =Frame(root, bg='#F8F6F0')
+        termBar.pack(fill=X)
+        termLabel = Label(termBar, image = TERMINAL_IMAGE, background='#F8F6F0')
+        termLabel.pack(pady=5, padx=5, fill='both', side=LEFT)
+
+        # terminal label
+        termType = Label(termBar, text=f'Terminal: ({termEnv})', background='#F8F6F0')
+        termType.pack(pady=5, padx=5, fill='both', side=LEFT)
+
+# def find_terminal_type():
+#     try:
 
 
-# Window Title
-root.title('SoaPy' + ' - {}{}'.format(projectName, editStatus))
+class LoadTerminal():
+    def __init__(self, root):
+        self.root = root
+        try: 
+            raise Exception # to test SoaPy Terminal
+            # xterm terminal
+            term = Frame(root, height=200, width=200)
 
-# app icon
-# appIcon = PhotoImage(r'icons/appIcon32.ico')
-
-root.tk.call('wm', 'iconphoto', root._w, APP_ICON)
-# root.iconbitmap(r'icons/appIcon32.ico')
-#root.iconbitmap('icons/appIcon32.ico')
-
-# Toolbar
-toolBar = Frame(root, bg='#F8F6F0')
-toolBar.pack(side=TOP, fill=X)
-
-
+            term.pack(fill='both', padx=1, pady=1)
+            # expand='yes', fill='both'
+            wid = term.winfo_id()
+            # os.system('xterm -into %d -hold -geometry 300x10 -sb &' % wid)
+            tt = subprocess.Popen(['xterm','-into',str(wid),'-geometry', '300x10'],
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+            termEnv = 'xterm'
+            
+        except:
+            SoaPyTerminal(root)
+            # output_window = ScrolledText(root, height=10)
+            # output_window.pack(fill=BOTH, expand=1)
+            # output_window.insert(1.0, 'SoaPy Terminal')
+            # output_window.configure(background='black', foreground='white')
+            #remove above once SoaPy Terminal has been modulerised
+            termEnv = 'SoaPy'
+            termType.configure(text=f'Terminal: ({termEnv})')
+            termType.update()
 # text field Terminal
 
 # output_window = ScrolledText(root, height=10)
@@ -250,15 +335,7 @@ toolBar.pack(side=TOP, fill=X)
 
 # lineNum.pack(side='left', fill='y') # uncomment for line numbering
 
-textField = Text(root, padx=5, pady=5,undo=True)
-# wrap='word'
 
-# textField.bind('<Any-KeyPress>', update_numbers) # uncomment for line numbering
-
-textField.pack(expand='true', pady=5, fill=BOTH)
-textField.pack_propagate(False)
-textField.configure(font=('nimbus sans', 10))
-textField.config(wrap='none')
 
 # lineNum.configure(font=('Helvetica', 12)) # uncomment for line numbering
 
@@ -293,32 +370,15 @@ textField.config(wrap='none')
 
 # Open File
 
-
-openFile = Button(toolBar, 
-height=20, width=20, image=OPEN_FILE_ICON,
-highlightthickness = 0, bd = 0, bg = '#F8F6F0',
-command=openPy)
-
-openFile.pack(side=LEFT, padx=5, pady= 10)
-
 # New File
 
 
-newFile = Button(toolBar, 
-height=20, width=20, image=FILE_NEW_IMAGE,
-highlightthickness = 0, bd = 0, bg = '#F8F6F0',
-command=newPy)
 
-newFile.pack(side=LEFT, padx=5, pady= 10)
 
 # Save File
 
 # original 'icons/save-3-line.png'
-saveFile = Button(toolBar, 
-height=20, width=20, image=SAVE_FILE_IMAGE,
-highlightthickness = 0, bd = 0, bg = '#F8F6F0',
-command=saveAsPy)
-saveFile.pack(side=LEFT, padx=5, pady= 10)
+
 
 # Run File
 
@@ -386,36 +446,15 @@ def runOperation(event=None):
 
 
 
-# App Information
 
-infFile = Button(toolBar, 
-height=20, width=20, image=APP_INFO_IMAGE,
-highlightthickness = 0, bd = 0, bg = '#F8F6F0',
-command=AppInfo) # will open app info dialog box
-
-infFile.pack(side=RIGHT, padx=5, pady= 10)
 
 # run script
 
-runFile = Button(toolBar, 
-height=20, width=20, image=RUN_FILE_ICON,
-highlightthickness = 0, bd = 0, bg = '#F8F6F0',
-command=runOperation)
 
-runFile.pack(side=RIGHT, padx=5, pady= 10)
 
-termEnv = '' # change based on loadup function
 
-# terminal image
-termBar =Frame(root, bg='#F8F6F0')
-termBar.pack(fill=X)
 
-termLabel = Label(termBar, image = TERMINAL_IMAGE, background='#F8F6F0')
-termLabel.pack(pady=5, padx=5, fill='both', side=LEFT)
 
-# terminal label
-termType = Label(termBar, text=f'Terminal: ({termEnv})', background='#F8F6F0')
-termType.pack(pady=5, padx=5, fill='both', side=LEFT)
 
 # terminal assistance
 # termHelp = Label(termBar, text='Remember to save before running script !',
@@ -431,11 +470,11 @@ termType.pack(pady=5, padx=5, fill='both', side=LEFT)
 
 
 
-def termAssistance():
-    if '.' in path:
-        termHelp.configure(text=f'Type: python {path}')
-    else:
-        termHelp.configure(text='Remember to save before running script !')
+# def termAssistance():
+#     if '.' in path:
+#         termHelp.configure(text=f'Type: python {path}')
+#     else:
+#         termHelp.configure(text='Remember to save before running script !')
 
 
 # class SoaPyTerminal():
@@ -446,29 +485,7 @@ def termAssistance():
 #     output_window.insert(1.0, 'SoaPy Terminal - Version 1.0.0\n')
 #     output_window.configure(state='disabled')
     
-try: 
-    raise Exception # to test SoaPy Terminal
-    # xterm terminal
-    term = Frame(root, height=200, width=200)
 
-    term.pack(fill='both', padx=1, pady=1)
-    # expand='yes', fill='both'
-    wid = term.winfo_id()
-    # os.system('xterm -into %d -hold -geometry 300x10 -sb &' % wid)
-    tt = subprocess.Popen(['xterm','-into',str(wid),'-geometry', '300x10'],
-    stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    termEnv = 'xterm'
-    
-except:
-    SoaPyTerminal(root)
-    # output_window = ScrolledText(root, height=10)
-    # output_window.pack(fill=BOTH, expand=1)
-    # output_window.insert(1.0, 'SoaPy Terminal')
-    # output_window.configure(background='black', foreground='white')
-    #remove above once SoaPy Terminal has been modulerised
-    termEnv = 'SoaPy'
-    termType.configure(text=f'Terminal: ({termEnv})')
-    termType.update()
 
 
 
@@ -482,7 +499,27 @@ except:
 
 
 if __name__ == '__main__':
+    # root for Tkinter application
+    root = Tk() # move to class
     
+    # initial variables
+    # path for file management
+    path = ''
+    USER_SYSTEM = platform.system()
+    projectName = 'untitled'
+    editStatus = '*'
+    termEnv = '' # change based on loadup function
+
+    # Setup Functions
+    load_images() 
+    window_settings()
+    # Widgets
+    ToolBar(root)
+    TextField(root)
+    TerminalBar(root)
+    LoadTerminal(root)
+
+
 
     root.mainloop()
 

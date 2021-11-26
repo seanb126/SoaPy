@@ -1,0 +1,5 @@
+# Requirements 
+dveloped using Python 3.9.7 | base Conda/Anaconda3
+* Tkinter 8.6.11
+* subprocess, os, sys
+
