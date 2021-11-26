@@ -147,8 +147,8 @@ def openPy():
         root.title(f'SoaPy - {fileName}')
         path = f'{filePath}'
         # print(path)
-        TextField.textField.delete('1.0', END) # check if in case cancelled
-        TextField.textField.insert(END, data)
+        textField.delete('1.0', END) # check if in case cancelled
+        textField.insert(END, data)
         file.close()
         # termAssistance() # re-activate for terminal help
         # termHelp.update() # re-activate for terminal help
@@ -193,7 +193,7 @@ def saveAsPy():
         root.title(f'SoaPy - {fileName}')
     # save 
         pyFile = open(pyFile, 'w')
-        pyFile.write(TextField.textField.get(1.0, END))
+        pyFile.write(textField.get(1.0, END))
         pyFile.close()   
         # termAssistance()
         # termHelp.update() # re-activate for terminal help
@@ -202,7 +202,7 @@ def saveAsPy():
 
 def newPy():
     # add if statement to determine if file is empty
-    TextField.textField.delete('1.0', END)
+    textField.delete('1.0', END)
     root.title('SoaPy - untitled*')
     path = ''
     # termAssistance()
@@ -272,6 +272,7 @@ class ToolBar():
 
 class TextField():
     def __init__(self, root):
+        global textField
         self.root = root
         textField = Text(root, padx=5, pady=5,undo=True)
         # wrap='word'
