@@ -441,10 +441,17 @@ def run():
                 except:
                     print('Xterm is not installed on this device')
         elif USER_SYSTEM == 'Windows':
-            print('Windows Testing/Development has not started')
+            print('Warning: Process untested on Windows')
+            try:
+                subprocess.Popen(['cmd.exe', '-e', f'bash -c \"python {path}; exec bash\"'])
+            except:
+                try:
+                    subprocess.Popen(['xterm', '-e', f'bash -c \"python {path}; exec bash\"'])
+                except:
+                    print('Could not find cmd.exe + xTerm is not installed on this device')
         else:
             print('Could not identify your OS...')
-            print('Attempting to open xterm')
+            print('Attempting to open xTerm')
             try:
                 subprocess.Popen(['xterm', '-e', f'bash -c \"python {path}; exec bash\"'])
             except:
