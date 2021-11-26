@@ -290,42 +290,41 @@ def run():
 
         cmd = f'python {path}' # remove
 
-
+# ensures file is saved before attempting to run script
 def runOperation(event=None):
     # path check
     if '.' not in path:
-        check_run()
+        check_run() # checks if file is saved
         if '.' not in path:
             pass
         else:
-            run()
+            run() # executes script
     else:
         run()
 
 
-
+# bootstrap
 if __name__ == '__main__':
+    
     # root for Tkinter application
     root = Tk() # move to class
     
-    # initial variables
-    # path for file management
+    # initial variables / could be added to class if needs be
     path = ''
-    USER_SYSTEM = platform.system()
+    USER_SYSTEM = platform.system() # finds users system (i.e Windows, Linux)
     projectName = 'untitled'
     editStatus = '*'
     termEnv = '' # change based on loadup function
-    SOAPY_VERSION = '1.0.0'
-    DEVELOPER_NAMES = 'Seanb126'
+    SOAPY_VERSION = '1.0.0' # current SoaPy version
+    DEVELOPER_NAMES = 'Seanb126' # developer names
 
     # Setup Functions
     load_images() 
     window_settings()
+
     # Widgets
     ToolBar(root)
     TextField(root)
-    # LineNumbers(root)
-    # textField.bind_all('<Any-KeyPress>', update_numbers)
     TerminalBar(root)
     LoadTerminal(root)
 
