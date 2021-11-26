@@ -92,6 +92,7 @@ class EstablishNumbers():
                 parent, width=4, padx=0, state='disabled',
                 takefocus=0, background='grey', wrap='none'
             )
+        # lineNum.tag_add('center', '1.0', 'end')
         lineNum.pack(side='left', fill='y') # uncomment for line numbering
 
 class LineNumbers():
@@ -363,7 +364,9 @@ class TextField():
         global textField
         self.root = root
         TEXT_FRAME = Frame(root)
-        EstablishNumbers(parent=TEXT_FRAME)
+
+        # EstablishNumbers(parent=TEXT_FRAME)
+        
         TEXT_FRAME.pack(fill=BOTH)
         textField = Text(TEXT_FRAME,undo=True)
         # wrap='word'
@@ -483,7 +486,7 @@ if __name__ == '__main__':
     # Widgets
     ToolBar(root)
     TextField(root)
-    LineNumbers(root)
+    # LineNumbers(root)
     # textField.bind_all('<Any-KeyPress>', update_numbers)
     TerminalBar(root)
     LoadTerminal(root)

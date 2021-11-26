@@ -16,10 +16,8 @@ Current icon produces graphical error, a pure .ico file will need to be created.
 Not an issue per-se however for terminal entries, just use another text field under the terminal to enter commands.
 
 ## Roadmap
-- Establish basic UI (including novel icons and line numbering)
-- Provide file functionality (saving, loading, etc)
-- Develop and implement code analysis
-- Implement Source Control through Git
-- Allow for package extensions
-- Automatic file backups
-- Terminal recommendations
+- Re-implement line numbers. Current approach is not only derivative, however is prone to glitches after passing the 24th line/original yview
+- Terminal Selection. Allow the user to select their preferred terminal, either through a settings menu or by clicking the terminal icon
+- Implement terminal commands, i.e run, ls(search files)
+- Save over opened file instead of having to use save as menu
+- 
