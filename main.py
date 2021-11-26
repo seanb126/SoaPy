@@ -45,25 +45,100 @@ from soapyterminal import SoaPyTerminal
 
 # root.geometry('500x600')
 
-# def get_numbers(event=None):
-#     output = ''
-#     row, col = textField.index('end').split('.')
-#     for i in range(1, int(row)):
-#         output += str(i) + '\n'
+def OnScroll(event):
+            widget = event.widget
+            other = textField if widget == lineNum else lineNum
+            other.yview_moveto(widget.yview()[0])
+            other.mark_set('insert', widget.index('insert'))
 
-#     return output
+def get_numbers(event=None):
+            global textField
+            output = ''
+            row, col = textField.index('end').split('.')
+            for i in range(1, int(row)):
+                output += str(i) + '\n'
 
-# def update_numbers(event=None):
-#     lineNum_bar = get_numbers()
-#     lineNum.config(state='normal')
-#     lineNum.delete(1.0, END)
-#     lineNum.insert(1.0, lineNum_bar)
-#     lineNum.config(state='disabled')
+            return output
 
-# lineNum = Text(
-#     root, width=4, padx=0, state='disabled',
-#     takefocus=0, background='grey', wrap='none'
-# )
+def update_numbers(event=None):
+        global lineNum, lineNum_bar
+        # def get_numbers(event=None):
+        #     output = ''
+        #     row, col = textField.index('end').split('.')
+        #     for i in range(1, int(row)):
+        #         output += str(i) + '\n'
+
+        #     return output
+        lineNum_bar = get_numbers()
+        lineNum.config(state='normal')
+        lineNum.delete(1.0, END)
+        lineNum.insert(1.0, lineNum_bar)
+        lineNum.config(state='disabled')
+
+def establish_linenumbers():
+    global lineNum, lineNum_bar
+    lineNum = Text(
+            root, width=4, padx=0, state='disabled',
+            takefocus=0, background='grey', wrap='none'
+        )
+    lineNum.pack(side='left', fill='y') # uncomment for line numbering
+
+class LineNumbers():
+    def __init__(self, root):
+        self.root = root
+        global lineNum, lineNum_bar
+        # lineNum = Text(
+        #     root, width=4, padx=0, state='disabled',
+        #     takefocus=0, background='grey', wrap='none'
+        # )
+        # lineNum.pack(side='left', fill='y') # uncomment for line numbering
+        # def get_numbers(event=None):
+        #     global textField
+        #     output = ''
+        #     row, col = textField.index('end').split('.')
+        #     for i in range(1, int(row)):
+        #         output += str(i) + '\n'
+
+        #     return output
+        lineNum_bar = get_numbers()
+        
+        lineNum.configure(font=('Helvetica', 12)) # uncomment for line numbering
+
+        
+
+        textField.bind_all("<KeyRelease-Up>", OnScroll)
+        textField.bind_all("<KeyRelease-Down>", OnScroll)
+        lineNum.bind_all("<KeyRelease-Up>", OnScroll)
+        lineNum.bind_all("<KeyRelease-Down>", OnScroll)
+
+        for widget in (textField, lineNum):
+                bindtags = list(widget.bindtags())
+                bindtags.insert(2, "custom")
+                widget.bindtags(tuple(bindtags))
+
+                widget.bind_class("custom", "<Up>", OnScroll)
+                widget.bind_all('<Button-5>', OnScroll)
+                widget.bind_all('<Button-4>', OnScroll)
+                widget.bind_class("custom", "<Down>", OnScroll)
+    
+    
+    # def update_numbers(event=None):
+    #     global lineNum, lineNum_bar
+    #     # def get_numbers(event=None):
+    #     #     output = ''
+    #     #     row, col = textField.index('end').split('.')
+    #     #     for i in range(1, int(row)):
+    #     #         output += str(i) + '\n'
+
+    #     #     return output
+    #     # lineNum_bar = get_numbers()
+    #     lineNum.config(state='normal')
+    #     lineNum.delete(1.0, END)
+    #     lineNum.insert(1.0, lineNum_bar)
+    #     lineNum.config(state='disabled')
+    
+
+    
 
 
 def choice(opt): # choice operand
@@ -277,8 +352,6 @@ class TextField():
         textField = Text(root, padx=5, pady=5,undo=True)
         # wrap='word'
 
-        # textField.bind('<Any-KeyPress>', update_numbers) # uncomment for line numbering
-
         textField.pack(expand='true', pady=5, fill=BOTH)
         textField.pack_propagate(False)
         textField.configure(font=('nimbus sans', 10))
@@ -329,60 +402,8 @@ class LoadTerminal():
             termEnv = 'SoaPy'
             termType.configure(text=f'Terminal: ({termEnv})')
             termType.update()
-# text field Terminal
+#text field Terminal
 
-# output_window = ScrolledText(root, height=10)
-# output_window.pack(side= 'bottom',fill='x', expand=1)
-
-
-# lineNum.pack(side='left', fill='y') # uncomment for line numbering
-
-
-
-# lineNum.configure(font=('Helvetica', 12)) # uncomment for line numbering
-
-# bind text fields
-# def OnScroll(event):
-#     widget = event.widget
-#     other = textField if widget == lineNum else lineNum
-#     other.yview_moveto(widget.yview()[0])
-#     other.mark_set('insert', widget.index('insert'))
-
-# textField("<KeyRelease-Up>", OnScroll)
-# textField("<KeyRelease-Down>", OnScroll)
-# lineNum("<KeyRelease-Up>", OnScroll)
-# lineNum("<KeyRelease-Down>", OnScroll)
-
-# for widget in (textField, lineNum):
-#         bindtags = list(widget.bindtags())
-#         bindtags.insert(2, "custom")
-#         widget.bindtags(tuple(bindtags))
-
-#         widget.bind_class("custom", "<Up>", OnScroll)
-#         widget.bind_all('<Button-5>', OnScroll)
-#         widget.bind_all('<Button-4>', OnScroll)
-#         widget.bind_class("custom", "<Down>", OnScroll)
-
-
-
-
-# ----buttons----
-
-# current theme from remixicon.com
-
-# Open File
-
-# New File
-
-
-
-
-# Save File
-
-# original 'icons/save-3-line.png'
-
-
-# Run File
 
 
 def run():
@@ -391,20 +412,8 @@ def run():
         process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE, shell=True)
         output, error =  process.communicate()
-        
-        # SoaPyTerminal.output_window.config(state='normal')
-        # SoaPyTerminal.output_window.insert(END, '\n')
-        # SoaPyTerminal.output_window.insert(END, output) # needs fixing
-       
-        # SoaPyTerminal.output_window.insert(1.0, error)
-        # SoaPyTerminal.output+_window.update()
-        # SoaPyTerminal.output_window.config(state='disabled')
-
         SoaPyTerminal.InsertData(output, error)
     else: 
-
-    #xterm code
-    # os.system(f"xterm -hold -e sudo python {path}" % wid)
         if USER_SYSTEM == 'Linux':
             try:
                 subprocess.Popen(['gnome-terminal', '-e', f'bash -c \"python {path}; exec bash\"'])
@@ -425,12 +434,6 @@ def run():
                 print('Xterm is not installed on this device')
 
         cmd = f'python {path}'
-    # tt.communicate(bytes(cmd.encode()))[0]
-
-
-    # tt.stdin.write(bytes(f'bash -c \"python {path}; exec bash\"'.encode))
-    # tt.communicate(f'bash -c \"python {path}; exec bash\"'.encode('utf8'))
-    # tt.stdin.flush()
 
 
 def runOperation(event=None):
@@ -443,60 +446,6 @@ def runOperation(event=None):
             run()
     else:
         run()
-
-    
-
-
-
-
-
-# run script
-
-
-
-
-
-
-
-# terminal assistance
-# termHelp = Label(termBar, text='Remember to save before running script !',
-# background='#F8F6F0')
-# termHelp.config(font=("Courier", 10))
-# termHelp.pack(pady=5, padx=5, fill='both', side=RIGHT)
-
-# hlpIcon =PhotoImage(file = r'icons/question.png')
-# hlpLabel = Label(termBar, image = hlpIcon, background='#F8F6F0')
-# hlpLabel.pack(pady=5, padx=5, fill='both', side=RIGHT)
-
-# add. updates for when changing labels
-
-
-
-# def termAssistance():
-#     if '.' in path:
-#         termHelp.configure(text=f'Type: python {path}')
-#     else:
-#         termHelp.configure(text='Remember to save before running script !')
-
-
-# class SoaPyTerminal():
-#     output_window = ScrolledText(root, height=10)
-#     output_window.pack(fill=BOTH, expand=1)
-    
-#     output_window.configure(background='black', foreground='white', font=("Helvetica", 10))
-#     output_window.insert(1.0, 'SoaPy Terminal - Version 1.0.0\n')
-#     output_window.configure(state='disabled')
-    
-
-
-
-
-# tagging python structures
-# textField.tag_config("red", foreground = "red")
-# textField.highlight_pattern("hello", "red")
-
-# Pack Order
-
 
 
 
@@ -517,11 +466,12 @@ if __name__ == '__main__':
     window_settings()
     # Widgets
     ToolBar(root)
+    establish_linenumbers()
     TextField(root)
+    LineNumbers(root)
+    textField.bind_all('<Any-KeyPress>', update_numbers)
     TerminalBar(root)
     LoadTerminal(root)
-
-
 
     root.mainloop()
 
