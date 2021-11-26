@@ -433,7 +433,10 @@ def run():
     else: 
         if USER_SYSTEM == 'Linux':
             try:
-                subprocess.Popen(['gnome-terminal', '-e', f'bash -c \"python {path}; exec bash\"'])
+                if termEnv == 'xTerm':
+                    subprocess.Popen(['xterm', '-e', f'bash -c \"python {path}; exec bash\"'])
+                else:
+                    subprocess.Popen(['gnome-terminal', '-e', f'bash -c \"python {path}; exec bash\"'])
             except:
                 print('System does not use Gnome DE')
                 try:
