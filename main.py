@@ -391,26 +391,23 @@ class TerminalBar():
         termType = Label(termBar, text=f'Terminal: ({termEnv})', background='#F8F6F0')
         termType.pack(pady=5, padx=5, fill='both', side=LEFT)
 
-# def find_terminal_type():
-#     try:
-
-
 class LoadTerminal():
     def __init__(self, root):
         global termEnv
         self.root = root
         try: 
-            raise Exception # to test SoaPy Terminal
+            # raise Exception # to test SoaPy Terminal
             # xterm terminal
             term = Frame(root, height=200, width=200)
-
-            term.pack(fill='both', padx=1, pady=1)
+            term.pack(fill='both', padx=1, pady=1, expand='yes')
             # expand='yes', fill='both'
             wid = term.winfo_id()
-            # os.system('xterm -into %d -hold -geometry 300x10 -sb &' % wid)
-            tt = subprocess.Popen(['xterm','-into',str(wid),'-geometry', '300x10'],
+            subprocess.Popen(['xterm','-into',str(wid)],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-            termEnv = 'xterm'
+            #,'-geometry', '300x10'
+            termEnv = 'xTerm'
+            termType.configure(text=f'Terminal: ({termEnv})')
+            termType.update()
             
         except:
             SoaPyTerminal(root)
