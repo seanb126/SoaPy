@@ -353,7 +353,7 @@ class TextField():
         self.root = root
         TEXT_FRAME = Frame(root)
         EstablishNumbers(parent=TEXT_FRAME)
-        TEXT_FRAME.pack()
+        TEXT_FRAME.pack(fill=BOTH)
         textField = Text(TEXT_FRAME,undo=True)
         # wrap='word'
 
