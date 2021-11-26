@@ -45,11 +45,15 @@ from soapyterminal import SoaPyTerminal
 
 # root.geometry('500x600')
 
-def OnScroll(event):
-            widget = event.widget
-            other = textField if widget == lineNum else lineNum
-            other.yview_moveto(widget.yview()[0])
-            other.mark_set('insert', widget.index('insert'))
+
+def OnScroll(event=None):
+            # widget = event.widget
+            # other = textField if widget == lineNum else lineNum
+            # other.yview_moveto(widget.yview()[0])
+            # other.mark_set('insert', widget.index('insert'))
+
+
+            lineNum.yview_moveto(textField.yview()[0])
 
 def get_numbers(event=None):
             global textField
@@ -62,6 +66,7 @@ def get_numbers(event=None):
 
 def update_numbers(event=None):
         global lineNum, lineNum_bar
+        OnScroll
         # def get_numbers(event=None):
         #     output = ''
         #     row, col = textField.index('end').split('.')
@@ -69,11 +74,15 @@ def update_numbers(event=None):
         #         output += str(i) + '\n'
 
         #     return output
+        
         lineNum_bar = get_numbers()
         lineNum.config(state='normal')
         lineNum.delete(1.0, END)
         lineNum.insert(1.0, lineNum_bar)
         lineNum.config(state='disabled')
+        OnScroll
+        
+        
 
 class EstablishNumbers():
     def __init__(self, parent):
@@ -117,6 +126,8 @@ class LineNumbers():
                 bindtags = list(widget.bindtags())
                 bindtags.insert(2, "custom")
                 widget.bindtags(tuple(bindtags))
+                widget.bind_all('<Any-KeyPress>', update_numbers)
+                
 
                 widget.bind_class("custom", "<Up>", OnScroll)
                 widget.bind_all('<Button-5>', OnScroll)
@@ -473,7 +484,7 @@ if __name__ == '__main__':
     ToolBar(root)
     TextField(root)
     LineNumbers(root)
-    textField.bind_all('<Any-KeyPress>', update_numbers)
+    # textField.bind_all('<Any-KeyPress>', update_numbers)
     TerminalBar(root)
     LoadTerminal(root)
 
