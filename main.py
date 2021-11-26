@@ -18,29 +18,29 @@ from soapyterminal import SoaPyTerminal
 
 def choice(opt): # choice operand
     if opt == 's':
-        saveAsPy()
+        save_file()
     elif opt == 'c':
         print('Run operation cancelled')
-    pop.destroy()
+    msg_box.destroy()
 
 # message box for when attempting to run a non-saved file
 def check_run(): 
-    global pop
-    pop = Toplevel(root) # places at top level of main window
-    pop.title('Run Operation Warning')
-    pop.geometry('300x100')
-    pop.resizable(height=False, width=False)
-    pop_label = Label(pop, text='You must first save this file \n in order to run it')
-    pop_label.configure(font=('nimbus sans',12))
-    pop_label.pack(pady=10)
-    pop_frame = Frame(pop)
-    pop_frame.pack(pady=5)
+    global msg_box
+    msg_box = Toplevel(root) # places at top level of main window
+    msg_box.title('Run Operation Warning')
+    msg_box.geometry('300x100')
+    msg_box.resizable(height=False, width=False)
+    msg_box_label = Label(msg_box, text='You must first save this file \n in order to run it')
+    msg_box_label.configure(font=('nimbus sans',12))
+    msg_box_label.pack(pady=10)
+    msg_box_frame = Frame(msg_box)
+    msg_box_frame.pack(pady=5)
 
-    saveButton = Button(pop_frame, text='Save', 
+    saveButton = Button(msg_box_frame, text='Save', 
     command=lambda: choice('s'))
     saveButton.grid(row=0, column=0)
 
-    cancelButton = Button(pop_frame, text='Cancel', 
+    cancelButton = Button(msg_box_frame, text='Cancel', 
     command=lambda: choice('c'))
     cancelButton.grid(row=0, column=1)
 
@@ -69,7 +69,7 @@ def AppInfo():
     devName.pack(pady= 5)
 
 # Function for opening files
-def openPy():
+def open_file():
     try:
         global path
         # Open file dialog settings
@@ -100,7 +100,7 @@ def openPy():
         print('i: Likely operation was cancelled by user')
 
 # Function fo saving file as
-def saveAsPy():
+def save_file():
     global path, root
     # save file operation
     if '.' not in path: # executes if no file previously opened
@@ -129,7 +129,7 @@ def saveAsPy():
 
 
 # Function for starting a new file
-def newPy():
+def new_file():
     global path
     textField.delete('1.0', END)
     root.title('SoaPy - untitled*')
@@ -182,9 +182,9 @@ class ToolBar():
         toolBar.pack(side=TOP, fill=X)
 
         # Left side
-        ToolBarIcon(toolBar, image=OPEN_FILE_ICON, side=LEFT, command=openPy) # open file
-        ToolBarIcon(toolBar, image=FILE_NEW_IMAGE, side=LEFT, command=newPy) # new file
-        ToolBarIcon(toolBar, image=SAVE_FILE_IMAGE, side=LEFT, command=saveAsPy) # save file as
+        ToolBarIcon(toolBar, image=OPEN_FILE_ICON, side=LEFT, command=open_file) # open file
+        ToolBarIcon(toolBar, image=FILE_NEW_IMAGE, side=LEFT, command=new_file) # new file
+        ToolBarIcon(toolBar, image=SAVE_FILE_IMAGE, side=LEFT, command=save_file) # save file as
         
         # Right side
         ToolBarIcon(toolBar, image=APP_INFO_IMAGE, side=RIGHT, command=AppInfo) # open app info
