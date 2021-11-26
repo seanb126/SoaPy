@@ -142,17 +142,11 @@ def load_images():
     global APP_INFO_IMAGE, RUN_FILE_ICON, TERMINAL_IMAGE,INFO_APP_ICON
     APP_ICON = PhotoImage(file = r'icons/appIcon32.png')
     FILE_NEW_IMAGE = PhotoImage(file = r'icons/new-file-icon.png')
-    #FILE_NEW_IMAGE = PhotoImage(file = r'icons/file-add-fill.png')
     OPEN_FILE_ICON = PhotoImage(file = r'icons/open-file-icon.png')
-    #OPEN_FILE_ICON = PhotoImage(file = r'icons/folder-open-fill.png')
     SAVE_FILE_IMAGE = PhotoImage(file = r'icons/save-icon-soapy.png')
-    # SAVE_FILE_IMAGE = PhotoImage(file = r'icons/save-fill.png')
     APP_INFO_IMAGE = PhotoImage(file = r'icons/info-icon.png')
-    #APP_INFO_IMAGE = PhotoImage(file = r'icons/information-fill.png')
     RUN_FILE_ICON = PhotoImage(file = r'icons/run-file-icon.png')
-    #RUN_FILE_ICON = PhotoImage(file = r'icons/greenRun2.png')
     TERMINAL_IMAGE = PhotoImage(file = r'icons/terminal-icon.png')
-    # TERMINAL_IMAGE = PhotoImage(file = r'icons/terminal.png')
     INFO_APP_ICON = PhotoImage(file =r'icons/appIcon32.png')
  
 # Sets main window settings
