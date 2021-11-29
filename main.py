@@ -17,7 +17,7 @@ import platform
 import tkinter.font as tkf
 from soapyterminal import SoaPyTerminal
 
-def choice(opt): # choice operand
+def choice(opt): # choice for message box
     if opt == 's':
         save_file()
     elif opt == 'c':
@@ -234,7 +234,7 @@ class LoadTerminal():
         global termEnv
         self.root = root
         try: 
-            raise Exception # Used to test SoaPy Terminal
+            # raise Exception # Comment this line to test SoaPy Terminal
 
             # xterm terminal
             term = Frame(root, height=200, width=200)
