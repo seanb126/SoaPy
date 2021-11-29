@@ -4,7 +4,7 @@
 SoaPy is a functional Python IDE, which includes the ability to run your Python scripts inside an embedded terminal(SoaPy Terminal or xTerm)
 or an external terminal(xTerm, Windows cmd.exe, Gnome terminal).
 
-SoaPy was developed using Python and the Tkinter package (see requirements.txt/ or main.py)
+SoaPy is developed using Python and the Tkinter package (see requirements.txt/ or main.py)
 
 
 Feel free to view/comment!
@@ -28,8 +28,12 @@ For Windows users, please await a commit which contains the .exe file.
 However that should be as easy to run, by just double clicking the executable file.
 
 ## How-to
+
 ### SoaPy Main Window
-![](/images/test_soapy.png)
+<p align="center">
+  <img src="/images/test_soapy.png">
+</p>
+
 The SoaPy terminal is currently set as the default medium for executing Python scripts.Largely this reason is to test and expand the utility
 of the SoaPy terminal, however, also this is because it is the most operable inside of the IDE.
 
@@ -38,12 +42,16 @@ of the SoaPy terminal, however, also this is because it is the most operable ins
 - Your script will run with the output visible inside the SoaPy terminal. Although, if you did not first save the file, the run operation
 will warn you that the file needs to be saved first, otherwise the operation is cancelled
 
-### SoaPy with xTerm
-![](/images/test_xterm.png)
+### Enabling Auto-Selection
+<p align="center">
+  <img src="/images/test_xterm.png">
+</p>
+
 SoaPy currently restricts the user to the SoaPy terminal, however the functionality is built-in for the scripts to be run
 in either xTerm, cmd.exe or Gnome-Terminal.
 
-To enable auto-terminal selection you can uncomment the following in 'main.py' on line 237(line may of changed), or find in the LoadTerminal() class:
+ - To enable auto-terminal selection you can uncomment the 'raise Exceptionn' in 'main.py' on line 237(line may of changed), or find in the LoadTerminal() class:
+
 ```python
 class LoadTerminal():
     def __init__(self, root):
@@ -53,17 +61,22 @@ class LoadTerminal():
             raise Exception # Comment this line to test SoaPy Terminal
 
 ```
-Remember that if xTerm is not installed or you arent on a device that uses cmd.exe(Windows) or Gnome-Terminal(Linux + Gnome DE), then auto-selection
+ - Remember that if xTerm is not installed or you arent on a device that uses cmd.exe(Windows) or Gnome-Terminal(Linux + Gnome DE), then auto-selection
 will utilise the SoaPy Terminal.
+
+### Running Scripts with xTerm
 
 Currently to test the script inside of the embedded xTerm terminal, you have to type the following inside the terminal:
 
 ```linux
 python3 filename.py
 ```
-If you use the run icon to run the script, when xTerm is selected as the terminal, it will run the script in a new window.
 
-![](/images/run_external.png)
+If you use the run icon to run the script, when xTerm is the designated termina, it will run the script in a new shell as follows:
+
+<p align="center">
+  <img src="/images/run_external.png">
+</p>
 
 In future releases the aim is to make this optional, with the default being that all scripts are run in the embedded terminal.
 
